@@ -118,7 +118,7 @@ function insertHeader(requests, documentId) {
             segmentId: headerId,
             index: 0
           },
-          text: '#EdTechHub'
+          text: 'EdTech Hub'
         }
       },
       {

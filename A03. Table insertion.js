@@ -48,6 +48,22 @@ const tableStyle_TRANSPERENT_BORDER = {
   }
 };
 
+let tableStyle_ORANGE_BORDER = {
+  width: {
+    magnitude: 1.0,
+    unit: 'PT'
+  },
+  dashStyle: 'SOLID',
+  color: {
+    color: {
+      rgbColor: {
+        green: 0.36078432,
+        red: 1.0
+      }
+    }
+  },
+};
+
 const paragraphStyle_TABLE = {
   namedStyleType: 'NORMAL_TEXT',
   spaceAbove: { magnitude: 10, unit: 'PT' },
@@ -182,21 +198,7 @@ function insertTable(numRows, numCols) {
           },
 
           tableCellStyle: {
-            borderBottom: {
-              width: {
-                magnitude: 1.0,
-                unit: 'PT'
-              },
-              dashStyle: 'SOLID',
-              color: {
-                color: {
-                  rgbColor: {
-                    green: 0.36078432,
-                    red: 1.0
-                  }
-                }
-              },
-            },
+            borderBottom: tableStyle_ORANGE_BORDER,
             borderLeft: tableStyle_TRANSPERENT_BORDER,
             borderRight: tableStyle_TRANSPERENT_BORDER,
           },

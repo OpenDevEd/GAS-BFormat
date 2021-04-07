@@ -52,21 +52,7 @@ function formatTable() {
           },
 
           tableCellStyle: {
-            borderBottom: {
-              width: {
-                magnitude: 1.0,
-                unit: 'PT'
-              },
-              dashStyle: 'SOLID',
-              color: {
-                color: {
-                  rgbColor: {
-                    'green': 0.36078432,
-                    red: 1.0
-                  }
-                }
-              },
-            },
+            borderBottom: tableStyle_ORANGE_BORDER,
             borderLeft: tableStyle_TRANSPERENT_BORDER,
             borderRight: tableStyle_TRANSPERENT_BORDER,
           },
@@ -140,7 +126,3 @@ function formatTable() {
     return 0;
   }
 }
-
-
-
-

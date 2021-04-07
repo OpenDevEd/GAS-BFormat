@@ -1,57 +1,57 @@
 
 let h1H2styles = {
   paragraphStyle_HEADING_1: {
-  namedStyleType: 'HEADING_1'
-},
+    namedStyleType: 'HEADING_1'
+  },
   textStyle_HEADING_1: {
-  foregroundColor: {
-    color: {
-      rgbColor: {
-        green: 0.36078432,
-        red: 1.0
+    foregroundColor: {
+      color: {
+        rgbColor: {
+          green: 0.36078432,
+          red: 1.0
+        }
       }
+    },
+    fontSize: {
+      magnitude: 21,
+      unit: 'PT'
+    },
+    bold: true,
+    weightedFontFamily: {
+      fontFamily: 'Montserrat',
+      weight: 400
     }
   },
-  fontSize: {
-    magnitude: 21,
-    unit: 'PT'
-  },
-  bold: true,
-  weightedFontFamily: {
-    fontFamily: 'Montserrat',
-    weight: 400
-  }
-},
   paragraphStyle_HEADING_2: {
-  namedStyleType: 'HEADING_2',
-  borderBottom: {
-    width: {
-      magnitude: 1,
-      unit: 'PT'
-    },
-    padding: {
-      magnitude: 2,
-      unit: 'PT'
-    },
-    dashStyle: 'SOLID'
-  }
-},
-  textStyle_HEADING_2: {
-  foregroundColor: {
-    color: {
-      rgbColor: {}
+    namedStyleType: 'HEADING_2',
+    borderBottom: {
+      width: {
+        magnitude: 1,
+        unit: 'PT'
+      },
+      padding: {
+        magnitude: 2,
+        unit: 'PT'
+      },
+      dashStyle: 'SOLID'
     }
   },
-  fontSize: {
-    magnitude: 16,
-    unit: 'PT'
-  },
-  bold: true,
-  weightedFontFamily: {
-    fontFamily: 'Montserrat',
-    weight: 400
+  textStyle_HEADING_2: {
+    foregroundColor: {
+      color: {
+        rgbColor: {}
+      }
+    },
+    fontSize: {
+      magnitude: 16,
+      unit: 'PT'
+    },
+    bold: true,
+    weightedFontFamily: {
+      fontFamily: 'Montserrat',
+      weight: 400
+    }
   }
-}
 }
 
 function formatTextLikeH1() {
@@ -153,11 +153,11 @@ function defaultStyleReport() {
     heading2TextStyle[DocumentApp.Attribute.BOLD] = true;
     body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING2, heading2TextStyle);
     // End. Set up heading 1 (named style type HEADING_1) attributes   
-    
+
     // Set up footnotes attributes
     let footnoteStyle = {};
     footnoteStyle[DocumentApp.Attribute.FONT_FAMILY] = 'Montserrat';
-    footnoteStyle[DocumentApp.Attribute.FONT_SIZE] = 11;
+    footnoteStyle[DocumentApp.Attribute.FONT_SIZE] = 10;
     footnoteStyle[DocumentApp.Attribute.SPACING_BEFORE] = 0;
     footnoteStyle[DocumentApp.Attribute.SPACING_AFTER] = 10;
     footnoteStyle[DocumentApp.Attribute.LINE_SPACING] = 1.15;
@@ -172,6 +172,9 @@ function defaultStyleReport() {
     // Set up lists attributes part 1
     Logger.log('formatListsPart1');
     formatListsPart1(false, requests, body, document, documentId);
+
+    // Set up 20pt after tables
+    setSpaceAfterTables20pt(body);
 
     doc.saveAndClose();
 
@@ -205,8 +208,39 @@ function defaultStyleReport() {
 
 
     let arrayH1H2 = [];
+    let spaceAfterTableParagraph = false;
+    let paragraphText = '';
+    let emptyLineAfterTable;
     for (let i in bodyElements) {
+
       if (bodyElements[i].paragraph) {
+
+        // Check paragraph after table
+        emptyLineAfterTable = false;
+        if (spaceAfterTableParagraph) {
+
+          if (bodyElements[i].paragraph.elements) {
+            bodyElements[i].paragraph.elements.forEach(function (item) {
+              if (item.textRun) {
+                if (item.textRun.content) {
+                  paragraphText += item.textRun.content.trim();
+                }
+              }
+            });
+          }
+          //Logger.log("AfterTableParagraph=" + paragraphText);
+          if (paragraphText == '') {
+            //Logger.log("Empty line=" + paragraphText);
+            emptyLineAfterTable = true;
+          }
+          //  else {
+          //   Logger.log("Not Empty line=" + paragraphText);
+          // }
+
+          spaceAfterTableParagraph = false;
+          paragraphText = '';
+        }
+        // End. Check paragraph after table
 
         // If paragraph is list item, we set spacingMode = NEVER_COLLAPSE, spaceAbove = 10, spaceBelow = 0
         if (bodyElements[i].paragraph.bullet) {
@@ -230,6 +264,18 @@ function defaultStyleReport() {
 
           // Check paragraph's style
           let spaceBelow = bodyElements[i].paragraph.paragraphStyle.spaceBelow;
+          let spaceAbove = bodyElements[i].paragraph.paragraphStyle.spaceAbove;
+
+          let itIsExtractedQuote = false;
+
+          if (spaceBelow && spaceAbove) {
+            if (spaceBelow.magnitude && spaceAbove.magnitude) {
+              if (spaceBelow.magnitude == 20 && spaceAbove.magnitude == 20) {
+                itIsExtractedQuote = true;
+              }
+            }
+          }
+
           if (spaceBelow) {
             if (spaceBelow.magnitude) {
               if (spaceBelow.magnitude != 10) {
@@ -242,16 +288,19 @@ function defaultStyleReport() {
             }
           }
 
-          let spaceAbove = bodyElements[i].paragraph.paragraphStyle.spaceAbove;
+
           if (spaceAbove) {
             if (spaceAbove.magnitude != 0) {
               spaceAbove.magnitude = 0;
               updateParagraphStyle = true;
             }
           }
+
+
+
           // Logger.log('elements[0].startIndex' + elements[0].startIndex);
           // Logger.log('elements[lastElement].endIndex' + elements[lastElement].endIndex)
-          if (updateParagraphStyle) {
+          if (updateParagraphStyle && !itIsExtractedQuote && !emptyLineAfterTable) {
             requests.push({
               updateParagraphStyle: {
                 paragraphStyle: bodyElements[i].paragraph.paragraphStyle,
@@ -266,14 +315,17 @@ function defaultStyleReport() {
           // End. Check paragraph's style
 
           // Check elements of paragraph
-          bodyElements[i].paragraph.elements.forEach(function (item) {
-            checkElementOfParagraph(requests, item, updateParagraphStyle);
-          });
+          if (!itIsExtractedQuote && !emptyLineAfterTable) {
+            bodyElements[i].paragraph.elements.forEach(function (item) {
+              checkElementOfParagraph(requests, item, updateParagraphStyle);
+            });
+          }
           // End. Check elements of paragraph
           // End. If paragraph has NORMAL_TEXT named style
         }
+      } else if (bodyElements[i].table) {
+        spaceAfterTableParagraph = true;
       }
-
     }
 
     // Use data from arrayH1H2 to add requests for Docs.Documents.batchUpdate
