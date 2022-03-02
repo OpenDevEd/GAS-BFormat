@@ -1,6 +1,14 @@
+function helpPopupUndo() {
+  const ui = DocumentApp.getUi();
+  ui.alert(`You may have noticed that BFormat actions cannot be undone. The reason for this is that we are using the Docs API. The reason for using the Docs API is that there are certain operations that are only possible with the Doc API. 
+However, it does have the disadvantage that you cannot undo those functions. Use BFormat functions with care. If necessary you can revert to an earlier version of the document using the File > Version History.`);
+}
+
 function onOpen(e) {
   DocumentApp.getUi().createMenu('BFormat')
+    .addItem('Why can I not use undo?', 'helpPopupUndo')
     .addItem('Help for setting default styles', 'setDefaultStylesManually')
+    .addSeparator()
     .addItem('Use default styles (for Report)', 'defaultStyleReport')
     .addItem('Format text like Heading 1', 'formatTextLikeH1')
     .addItem('Reformat headings for tables, figures, boxes', 'reformatHeadings5and6') //TODO
@@ -14,7 +22,10 @@ function onOpen(e) {
     .addItem('Insert table 2x2', 'insertTable2x2')
     .addItem('Insert table 3x3', 'insertTable3x3')
     .addItem('Insert table 4x4', 'insertTable4x4')
-    .addItem('Format this table', 'formatTable')
+  // Elena: do not change bold:
+    .addItem('Format this table', 'formatTableNoBold')
+  // Function as before: everything bold.
+    .addItem('Format this table (all bold)', 'formatTable')
     .addItem('Format this table (basic)', 'formatTableBasic')  //TODO
     .addSeparator()
 
@@ -37,28 +48,4 @@ function onOpen(e) {
     .addItem('Update footer', 'formatFooter')
     .addItem('Use default margins (Report)', 'defaultMargins')
     .addToUi();
-}
-
-function reformatHeadings5and6Example() {
-  stylesetTable = {
-    run_in_regexp: /^Table (\d+)\./,
-    run_in_style: {
-// Bold, orange
-    },
-    follow_on_style: {
-// italics, orange
-    }
-  }
-  stylesetFigure = {
-    run_in_regexp: /^(Figure|Box) (\d+)\./,
-    run_in_style: {
-// Bold black
-    },
-    follow_on_style: {
-// italics, black      
-    }
-  }
-  reformatHeadingWithRunInStyle('Heading 5', stylesetTable)
-  reformatHeadingWithRunInStyle('Heading 6', stylesetFigure)
-
 }

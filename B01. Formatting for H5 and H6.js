@@ -67,11 +67,13 @@ function detectHeadings5and6(requests, paragraph) {
       }
     });
 
-    const checkTable = /^Table (\d+|X)\./.exec(paragraphText);
+    //const checkTable = /^Table (\d+|X)\./.exec(paragraphText);
+    const checkTable = /^Table (\d+|X)\.?\d*\. /.exec(paragraphText);
     if (checkTable != null) {
       updateFigureXBoxXTableXStyle(requests, start, checkTable[0].length, end, paragraphStyle_TABLE_HEADING, textStyle_TABLE_HEADING_PART_1, textStyle_TABLE_HEADING_PART_2);
     } else {
-      const checkBoxFigure = /^(Figure|Box) (\d+|X)\./.exec(paragraphText);
+      //const checkBoxFigure = /^(Figure|Box) (\d+|X)\./.exec(paragraphText);
+      const checkBoxFigure = /^(Figure|Box) (\d+|X)\.?\d*\. /.exec(paragraphText);
       if (checkBoxFigure != null) {
         updateFigureXBoxXTableXStyle(requests, start, checkBoxFigure[0].length, end, paragraphStyle_FIGURE_HEADING_5, textStyle_FIGURE_PART_1, textStyle_FIGURE_PART_2);
       }

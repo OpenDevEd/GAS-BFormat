@@ -13,6 +13,11 @@ let paragraphStyle_FIGURE_CONTENT = {
 };
 
 let textStyle_FIGURE_PART_1 = {
+  foregroundColor: {
+    color: {
+      rgbColor: { red: 0, green: 0, blue: 0 }
+    }
+  },
   fontSize: {
     magnitude: 11,
     unit: 'PT'
@@ -20,12 +25,17 @@ let textStyle_FIGURE_PART_1 = {
   bold: true,
   italic: false,
   weightedFontFamily: {
-    fontFamily: 'Montserrat',
+    fontFamily: config_fontFamily,
     weight: 400
   }
 };
 
 let textStyle_FIGURE_PART_2 = {
+  foregroundColor: {
+    color: {
+      rgbColor: { red: 0, green: 0, blue: 0 }
+    }
+  },
   fontSize: {
     magnitude: 11,
     unit: 'PT'
@@ -33,12 +43,17 @@ let textStyle_FIGURE_PART_2 = {
   bold: false,
   italic: true,
   weightedFontFamily: {
-    fontFamily: 'Montserrat',
+    fontFamily: config_fontFamily,
     weight: 400
   }
 };
 
 let textStyle_FIGURE_CONTENT = {
+  foregroundColor: {
+    color: {
+      rgbColor: {red:0, green:0, blue:0}
+    }
+  },  
   fontSize: {
     magnitude: 12,
     unit: 'PT'
@@ -46,7 +61,7 @@ let textStyle_FIGURE_CONTENT = {
   bold: false,
   italic: false,
   weightedFontFamily: {
-    fontFamily: 'Montserrat',
+    fontFamily: config_fontFamily,
     weight: 400
   }
 };
@@ -60,7 +75,7 @@ function insertFigure1() {
     let lenTextFigure1H5 = textFigure1H5.length;
     let lenTextFigureContentNormal = textFigureContentNormal.length;
 
-    
+
     let doc = DocumentApp.getActiveDocument();
     let documentId = doc.getId();
 
@@ -174,7 +189,7 @@ function insertFigure2() {
     let lenTextFigure2H5 = textFigure2H5.length;
     let lenTextFigureContentNormal = textFigureContentNormal.length;
 
-    
+
     let doc = DocumentApp.getActiveDocument();
     let documentId = doc.getId();
 

@@ -1,4 +1,3 @@
-
 let h1H2styles = {
   paragraphStyle_HEADING_1: {
     namedStyleType: 'HEADING_1'
@@ -6,10 +5,7 @@ let h1H2styles = {
   textStyle_HEADING_1: {
     foregroundColor: {
       color: {
-        rgbColor: {
-          green: 0.36078432,
-          red: 1.0
-        }
+        rgbColor: hexToRGB(config_font_color)
       }
     },
     fontSize: {
@@ -18,7 +14,7 @@ let h1H2styles = {
     },
     bold: true,
     weightedFontFamily: {
-      fontFamily: 'Montserrat',
+      fontFamily: config_fontFamily,
       weight: 400
     }
   },
@@ -48,7 +44,7 @@ let h1H2styles = {
     },
     bold: true,
     weightedFontFamily: {
-      fontFamily: 'Montserrat',
+      fontFamily: config_fontFamily,
       weight: 400
     }
   }
@@ -122,29 +118,30 @@ function defaultStyleReport() {
 
     // Set up body text (named style type NORMAL_TEXT) attributes
     let normalTextStyle = {};
-    normalTextStyle[DocumentApp.Attribute.FONT_FAMILY] = 'Montserrat';
+    normalTextStyle[DocumentApp.Attribute.FONT_FAMILY] = config_fontFamily;
     normalTextStyle[DocumentApp.Attribute.FONT_SIZE] = 12;
     normalTextStyle[DocumentApp.Attribute.SPACING_BEFORE] = 0;
     normalTextStyle[DocumentApp.Attribute.SPACING_AFTER] = 10;
     normalTextStyle[DocumentApp.Attribute.LINE_SPACING] = 1.15;
+    normalTextStyle[DocumentApp.Attribute.FOREGROUND_COLOR] = '#000000';
     body.setHeadingAttributes(DocumentApp.ParagraphHeading.NORMAL, normalTextStyle);
     // End. Set up body text (named style type NORMAL_TEXT) attributes
 
     // Set up heading 1 (named style type HEADING_1) attributes
     let heading1TextStyle = {};
-    heading1TextStyle[DocumentApp.Attribute.FONT_FAMILY] = 'Montserrat';
+    heading1TextStyle[DocumentApp.Attribute.FONT_FAMILY] = config_fontFamily;
     heading1TextStyle[DocumentApp.Attribute.FONT_SIZE] = 21;
     heading1TextStyle[DocumentApp.Attribute.SPACING_BEFORE] = 14;
     heading1TextStyle[DocumentApp.Attribute.SPACING_AFTER] = 10;
     heading1TextStyle[DocumentApp.Attribute.LINE_SPACING] = 1.15;
-    heading1TextStyle[DocumentApp.Attribute.FOREGROUND_COLOR] = '#ff5c00';
+    heading1TextStyle[DocumentApp.Attribute.FOREGROUND_COLOR] = config_font_color;
     heading1TextStyle[DocumentApp.Attribute.BOLD] = true;
     body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING1, heading1TextStyle);
     // End. Set up heading 1 (named style type HEADING_1) attributes   
 
     // Set up heading 2 (named style type HEADING_2) attributes
     let heading2TextStyle = {};
-    heading2TextStyle[DocumentApp.Attribute.FONT_FAMILY] = 'Montserrat';
+    heading2TextStyle[DocumentApp.Attribute.FONT_FAMILY] = config_fontFamily;
     heading2TextStyle[DocumentApp.Attribute.FONT_SIZE] = 16;
     heading2TextStyle[DocumentApp.Attribute.SPACING_BEFORE] = 14;
     heading2TextStyle[DocumentApp.Attribute.SPACING_AFTER] = 8;
@@ -154,9 +151,16 @@ function defaultStyleReport() {
     body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING2, heading2TextStyle);
     // End. Set up heading 1 (named style type HEADING_1) attributes   
 
+    // Set up heading 5(6) (named style type HEADING_5) attributes
+    let heading5TextStyle = {};
+    heading5TextStyle[DocumentApp.Attribute.FOREGROUND_COLOR] = '#000000';
+    body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING5, heading5TextStyle);
+    body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING6, heading5TextStyle);
+    // End. Set up heading 5(6) (named style type HEADING_5) attributes
+
     // Set up footnotes attributes
     let footnoteStyle = {};
-    footnoteStyle[DocumentApp.Attribute.FONT_FAMILY] = 'Montserrat';
+    footnoteStyle[DocumentApp.Attribute.FONT_FAMILY] = config_fontFamily;
     footnoteStyle[DocumentApp.Attribute.FONT_SIZE] = 10;
     footnoteStyle[DocumentApp.Attribute.SPACING_BEFORE] = 0;
     footnoteStyle[DocumentApp.Attribute.SPACING_AFTER] = 10;
@@ -208,7 +212,7 @@ function defaultStyleReport() {
 
 
     let arrayH1H2 = [];
-    let spaceAfterTableParagraph = false;
+    let spaceAfterTableParagraph = true;
     let paragraphText = '';
     let emptyLineAfterTable;
     for (let i in bodyElements) {
@@ -420,9 +424,9 @@ function checkElementOfParagraph(requests, item, updateParagraphStyle) {
 
     // Check fontFamily
     if (item.textRun.textStyle.weightedFontFamily) {
-      if (item.textRun.textStyle.weightedFontFamily.fontFamily != 'Montserrat') {
+      if (item.textRun.textStyle.weightedFontFamily.fontFamily != config_fontFamily) {
         wrongFontSize = true;
-        item.textRun.textStyle.weightedFontFamily.fontFamily = 'Montserrat';
+        item.textRun.textStyle.weightedFontFamily.fontFamily = config_fontFamily;
       }
     }
     // End. Check fontFamily

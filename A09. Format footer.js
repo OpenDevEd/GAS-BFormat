@@ -5,10 +5,7 @@ const paragraphStyle_FOOTER_SEC = {
 const textStyle_FOOTER_SEC = {
   foregroundColor: {
     color: {
-      rgbColor: {
-        green: 0.36078432,
-        red: 1.0
-      }
+      rgbColor: hexToRGB(config_font_color)
     }
   },
   fontSize: {
@@ -17,7 +14,7 @@ const textStyle_FOOTER_SEC = {
   },
   bold: false,
   weightedFontFamily: {
-    fontFamily: 'Montserrat',
+    fontFamily: config_fontFamily,
     weight: 400
   }
 };
@@ -28,7 +25,7 @@ const textStyle_FOOTER_SEC_UPDATE = {
     unit: 'PT'
   },
   weightedFontFamily: {
-    fontFamily: 'Montserrat',
+    fontFamily: config_fontFamily,
     weight: 400
   }
 };
@@ -117,9 +114,10 @@ function insertFooter(requests, documentId, title) {
         updateDocumentStyle: {
           documentStyle: {
             useFirstPageHeaderFooter: true,
-            pageNumberStart: 0
+            pageNumberStart: 0,
+            marginFooter: { magnitude: config_MARGIN_FOOTER_cm * cmTOpt, unit: 'PT' }
           },
-          fields: 'pageNumberStart,useFirstPageHeaderFooter'
+          fields: 'pageNumberStart,useFirstPageHeaderFooter,marginFooter'
         }
       }
     );
@@ -159,9 +157,10 @@ function updateFooter(requests, documentId, document, title) {
         updateDocumentStyle: {
           documentStyle: {
             useFirstPageHeaderFooter: true,
-            pageNumberStart: 0
+            pageNumberStart: 0,
+            marginFooter: { magnitude: config_MARGIN_FOOTER_cm * cmTOpt, unit: 'PT' }            
           },
-          fields: 'pageNumberStart,useFirstPageHeaderFooter'
+          fields: 'pageNumberStart,useFirstPageHeaderFooter,marginFooter'
         }
       },
       {
@@ -249,7 +248,7 @@ function updateFooter(requests, documentId, document, title) {
 
 function helpFooterUpdate(footerId, item, textRunOrAutoText, requests) {
   textRunOrAutoText.textStyle['fontSize'] = { magnitude: 10, unit: 'PT' };
-  textRunOrAutoText.textStyle['weightedFontFamily'] = { fontFamily: 'Montserrat', weight: 400 };
+  textRunOrAutoText.textStyle['weightedFontFamily'] = { fontFamily: config_fontFamily, weight: 400 };
 
   if (item.startIndex == null) {
     item.startIndex = 0;

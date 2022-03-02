@@ -7,10 +7,7 @@ const paragraphStyle_HEADING_SEC = {
     },
     color: {
       color: {
-        rgbColor: {
-          green: 0.36078432,
-          red: 1.0
-        }
+        rgbColor: hexToRGB(config_font_color)
       }
     },
     padding: {
@@ -37,7 +34,7 @@ const textStyle_HEADING_SEC = {
   },
   bold: false,
   weightedFontFamily: {
-    fontFamily: 'Montserrat',
+    fontFamily: config_fontFamily,
     weight: 600
   }
 };
@@ -48,7 +45,7 @@ const textStyle_HEADING_SEC_UPDATE = {
     unit: 'PT'
   },
   weightedFontFamily: {
-    fontFamily: 'Montserrat',
+    fontFamily: config_fontFamily,
     weight: 600
   }
 };
@@ -107,9 +104,10 @@ function insertHeader(requests, documentId) {
         updateDocumentStyle: {
           documentStyle: {
             useFirstPageHeaderFooter: true,
-            pageNumberStart: 0
+            pageNumberStart: 0,
+            marginHeader: { magnitude: config_MARGIN_HEADER_cm * cmTOpt, unit: 'PT' }
           },
-          fields: 'pageNumberStart,useFirstPageHeaderFooter'
+          fields: 'pageNumberStart,useFirstPageHeaderFooter,marginHeader'
         }
       },
       {
@@ -178,9 +176,10 @@ function updateHeader(requests, documentId, document) {
         updateDocumentStyle: {
           documentStyle: {
             useFirstPageHeaderFooter: true,
-            pageNumberStart: 0
+            pageNumberStart: 0,
+            marginHeader: { magnitude: config_MARGIN_HEADER_cm * cmTOpt, unit: 'PT' }
           },
-          fields: 'pageNumberStart,useFirstPageHeaderFooter'
+          fields: 'pageNumberStart,useFirstPageHeaderFooter,marginHeader'
         }
       },
       {
@@ -205,7 +204,7 @@ function updateHeader(requests, documentId, document) {
       item.paragraph.elements.forEach(function (item) {
 
         item.textRun.textStyle['fontSize'] = { magnitude: 10, unit: 'PT' };
-        item.textRun.textStyle['weightedFontFamily'] = { fontFamily: 'Montserrat', weight: 600 };
+        item.textRun.textStyle['weightedFontFamily'] = { fontFamily: config_fontFamily, weight: 600 };
 
         if (item.startIndex == null) {
           item.startIndex = 0;

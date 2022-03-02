@@ -18,7 +18,7 @@ const tableStyles = {
     },
     bold: true,
     weightedFontFamily: {
-      fontFamily: 'Montserrat',
+      fontFamily: config_fontFamily,
       weight: 400
     }
   },
@@ -29,7 +29,7 @@ const tableStyles = {
     },
     bold: false,
     weightedFontFamily: {
-      fontFamily: 'Montserrat',
+      fontFamily: config_fontFamily,
       weight: 400
     }
   }
@@ -56,10 +56,7 @@ let tableStyle_ORANGE_BORDER = {
   dashStyle: 'SOLID',
   color: {
     color: {
-      rgbColor: {
-        green: 0.36078432,
-        red: 1.0
-      }
+      rgbColor: hexToRGB(config_font_color)
     }
   },
 };
@@ -81,10 +78,7 @@ const paragraphStyle_TABLE_HEADING = {
 const textStyle_TABLE_HEADING_PART_1 = {
   foregroundColor: {
     color: {
-      rgbColor: {
-        green: 0.36078432,
-        red: 1.0
-      }
+      rgbColor: hexToRGB(config_font_color)
     }
   },
   fontSize: {
@@ -94,7 +88,7 @@ const textStyle_TABLE_HEADING_PART_1 = {
   bold: true,
   italic: false,
   weightedFontFamily: {
-    fontFamily: 'Montserrat',
+    fontFamily: config_fontFamily,
     weight: 400
   }
 };
@@ -102,10 +96,7 @@ const textStyle_TABLE_HEADING_PART_1 = {
 const textStyle_TABLE_HEADING_PART_2 = {
   foregroundColor: {
     color: {
-      rgbColor: {
-        green: 0.36078432,
-        red: 1.0
-      }
+      rgbColor: hexToRGB(config_font_color)
     }
   },
   fontSize: {
@@ -115,7 +106,7 @@ const textStyle_TABLE_HEADING_PART_2 = {
   bold: false,
   italic: true,
   weightedFontFamily: {
-    fontFamily: 'Montserrat',
+    fontFamily: config_fontFamily,
     weight: 400
   }
 };

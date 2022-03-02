@@ -5,10 +5,12 @@ function defaultMargins() {
     let body = doc.getBody();
 
     let style = {};
-    style[DocumentApp.Attribute.MARGIN_TOP] = '56.69291338582678';
-    style[DocumentApp.Attribute.MARGIN_BOTTOM] = '56.69291338582678';
-    style[DocumentApp.Attribute.MARGIN_LEFT] = '56.69291338582678';
-    style[DocumentApp.Attribute.MARGIN_RIGHT] = '56.69291338582678';
+    // 2cm = 56.69291338582678 pt
+    const cmTOpt = 56.69291338582678 / 2;
+    style[DocumentApp.Attribute.MARGIN_TOP] = config_MARGIN_TOP_cm * cmTOpt;
+    style[DocumentApp.Attribute.MARGIN_BOTTOM] = config_MARGIN_BOTTOM_cm  * cmTOpt;
+    style[DocumentApp.Attribute.MARGIN_LEFT] = 56.69291338582678;
+    style[DocumentApp.Attribute.MARGIN_RIGHT] = 56.69291338582678;
     body.setAttributes(style);
   }
   catch (error) {

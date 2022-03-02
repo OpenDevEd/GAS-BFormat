@@ -12,10 +12,7 @@ const paragraphStyle_LEFT_BORDER = {
     dashStyle: 'SOLID',
     color: {
       color: {
-        rgbColor: {
-          green: 0.36078432,
-          red: 1.0
-        }
+        rgbColor: hexToRGB(config_font_color)
       }
     }
   }

@@ -2,7 +2,7 @@
 function setSpaceAfterTables20pt(body = DocumentApp.getActiveDocument().getBody()) {
   let childIndexTable, parAfterTable, parText;
   const tables = body.getTables();
-  for (let i in tables) {
+  for (let i = 1; i < tables.length; i++){
     childIndexTable = body.getChildIndex(tables[i]);
     parAfterTable = body.getChild(childIndexTable + 1);
     if (parAfterTable.getType() == DocumentApp.ElementType.PARAGRAPH) {

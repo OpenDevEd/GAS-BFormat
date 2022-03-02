@@ -1,6 +1,10 @@
+function formatTableNoBold() {
+  formatTable(updateParagraphTextStyle = false);
+}
+
 // Format table using default Report styles
 // See styles in A03. Table insertion.gs
-function formatTable() {
+function formatTable(updateParagraphTextStyle = true) {
   let ui = DocumentApp.getUi();
   try {
     let doc = DocumentApp.getActiveDocument();
@@ -79,43 +83,47 @@ function formatTable() {
       }
     );
 
-    let textStyle;
-    for (let row = 0; row < numRows; row++) {
-      for (let col = 0; col < numCols; col++) {
-        if (row == 0 || col == 0) {
-          textStyle = tableStyles.textStyle_TOPIC_COLUMN_CELL;
-        } else {
-          textStyle = tableStyles.textStyle_ITEM_CELL;
-        }
-
-
-        let cellStartIndex = fTable.table.tableRows[row].tableCells[col].startIndex;
-        let cellEndIndex = fTable.table.tableRows[row].tableCells[col].endIndex;
-
-        requests.push(
-          {
-            updateParagraphStyle: {
-              paragraphStyle: paragraphStyle_TABLE,
-              range: {
-                startIndex: cellStartIndex,
-                endIndex: cellEndIndex
-              },
-              fields: formFieldsString(paragraphStyle_TABLE)
-            }
-          },
-          {
-            updateTextStyle: {
-              range: {
-                startIndex: cellStartIndex,
-                endIndex: cellEndIndex
-              },
-              text_style: textStyle,
-              fields: formFieldsString(textStyle)
-            }
+    // Update paragraph style and text style
+    if (updateParagraphTextStyle) {
+      let textStyle;
+      for (let row = 0; row < numRows; row++) {
+        for (let col = 0; col < numCols; col++) {
+          if (row == 0 || col == 0) {
+            textStyle = tableStyles.textStyle_TOPIC_COLUMN_CELL;
+          } else {
+            textStyle = tableStyles.textStyle_ITEM_CELL;
           }
-        );
+
+
+          let cellStartIndex = fTable.table.tableRows[row].tableCells[col].startIndex;
+          let cellEndIndex = fTable.table.tableRows[row].tableCells[col].endIndex;
+
+          requests.push(
+            {
+              updateParagraphStyle: {
+                paragraphStyle: paragraphStyle_TABLE,
+                range: {
+                  startIndex: cellStartIndex,
+                  endIndex: cellEndIndex
+                },
+                fields: formFieldsString(paragraphStyle_TABLE)
+              }
+            },
+            {
+              updateTextStyle: {
+                range: {
+                  startIndex: cellStartIndex,
+                  endIndex: cellEndIndex
+                },
+                text_style: textStyle,
+                fields: formFieldsString(textStyle)
+              }
+            }
+          );
+        }
       }
     }
+    // End. Update paragraph style and text style
 
     Docs.Documents.batchUpdate({
       requests: requests
