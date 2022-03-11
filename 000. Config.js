@@ -21,7 +21,8 @@ const styles = {
     "MARGIN_BOTTOM_cm": 2.5,
     "MARGIN_HEADER_cm": 1.0,
     "MARGIN_FOOTER_cm": 1.0,
-    "main_heading_font_color": "#000000",
+    "main_heading_font_color": "#FF5C00",
+    // "main_heading_font_color": "#000000",
     // "main_heading_font_color": "#EF8456",
   },
   "report_edtechhub":
