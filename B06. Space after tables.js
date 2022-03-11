@@ -1,4 +1,4 @@
-
+// Sets 20 pt space after tables
 function setSpaceAfterTables20pt(body = DocumentApp.getActiveDocument().getBody()) {
   let childIndexTable, parAfterTable, parText;
   const tables = body.getTables();

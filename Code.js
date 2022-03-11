@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 function helpPopupUndo() {
   const ui = DocumentApp.getUi();
   ui.alert(`You may have noticed that BFormat actions cannot be undone. The reason for this is that we are using the Docs API. The reason for using the Docs API is that there are certain operations that are only possible with the Doc API. 
@@ -5,11 +12,22 @@ However, it does have the disadvantage that you cannot undo those functions. Use
 }
 
 function onOpen(e) {
+
+  const thisDocStyle = getDefaultStyle();
+
+  const subMenu = DocumentApp.getUi().createMenu('More styles');
+
+  let selectedStyleMarker = '';
+  for (let styleName in styles) {
+    subMenu.addItem(styles[styleName]['name'] + selectedStyleMarker, styleName);
+  }
+
   DocumentApp.getUi().createMenu('BFormat')
     .addItem('Why can I not use undo?', 'helpPopupUndo')
     .addItem('Help for setting default styles', 'setDefaultStylesManually')
     .addSeparator()
-    .addItem('Use default styles (for Report)', 'defaultStyleReport')
+    .addItem('Use default: ' + styles[thisDocStyle]['name'], 'defaultStyleReport')
+    .addSubMenu(subMenu)
     .addItem('Format text like Heading 1', 'formatTextLikeH1')
     .addItem('Reformat headings for tables, figures, boxes', 'reformatHeadings5and6') //TODO
     .addSeparator()
@@ -22,9 +40,9 @@ function onOpen(e) {
     .addItem('Insert table 2x2', 'insertTable2x2')
     .addItem('Insert table 3x3', 'insertTable3x3')
     .addItem('Insert table 4x4', 'insertTable4x4')
-  // Elena: do not change bold:
+    // Elena: do not change bold:
     .addItem('Format this table', 'formatTableNoBold')
-  // Function as before: everything bold.
+    // Function as before: everything bold.
     .addItem('Format this table (all bold)', 'formatTable')
     .addItem('Format this table (basic)', 'formatTableBasic')  //TODO
     .addSeparator()

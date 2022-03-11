@@ -5,7 +5,7 @@ let h1H2styles = {
   textStyle_HEADING_1: {
     foregroundColor: {
       color: {
-        rgbColor: hexToRGB(config_font_color)
+        rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
       }
     },
     fontSize: {
@@ -14,7 +14,7 @@ let h1H2styles = {
     },
     bold: true,
     weightedFontFamily: {
-      fontFamily: config_fontFamily,
+      fontFamily: styles[getThisDocStyle()]['fontFamily'],
       weight: 400
     }
   },
@@ -44,7 +44,7 @@ let h1H2styles = {
     },
     bold: true,
     weightedFontFamily: {
-      fontFamily: config_fontFamily,
+      fontFamily: styles[getThisDocStyle()]['fontFamily'],
       weight: 400
     }
   }
@@ -108,6 +108,9 @@ function formatTextLikeH1() {
 function defaultStyleReport() {
   let ui = DocumentApp.getUi();
   try {
+
+    const config_fontFamily = styles[getThisDocStyle()]['fontFamily'];
+
     let requests = [];
     let updateParagraphStyle;
     let doc = DocumentApp.getActiveDocument();
@@ -134,7 +137,7 @@ function defaultStyleReport() {
     heading1TextStyle[DocumentApp.Attribute.SPACING_BEFORE] = 14;
     heading1TextStyle[DocumentApp.Attribute.SPACING_AFTER] = 10;
     heading1TextStyle[DocumentApp.Attribute.LINE_SPACING] = 1.15;
-    heading1TextStyle[DocumentApp.Attribute.FOREGROUND_COLOR] = config_font_color;
+    heading1TextStyle[DocumentApp.Attribute.FOREGROUND_COLOR] = styles[getThisDocStyle()]['main_heading_font_color'];
     heading1TextStyle[DocumentApp.Attribute.BOLD] = true;
     body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING1, heading1TextStyle);
     // End. Set up heading 1 (named style type HEADING_1) attributes   
@@ -386,6 +389,9 @@ function defaultStyleReport() {
 // Check fontSize and fontFamily of element of paragraph
 // defaultStyleReport and formatListsPart2 use the function
 function checkElementOfParagraph(requests, item, updateParagraphStyle) {
+
+  const config_fontFamily = styles[getThisDocStyle()]['fontFamily'];
+
   let normalTextForegroundColor, likeH1textColor;
   likeH1textColor = false;
   wrongFontSize = false;

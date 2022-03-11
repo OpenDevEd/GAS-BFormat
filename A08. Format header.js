@@ -7,7 +7,7 @@ const paragraphStyle_HEADING_SEC = {
     },
     color: {
       color: {
-        rgbColor: hexToRGB(config_font_color)
+        rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
       }
     },
     padding: {
@@ -34,21 +34,21 @@ const textStyle_HEADING_SEC = {
   },
   bold: false,
   weightedFontFamily: {
-    fontFamily: config_fontFamily,
+    fontFamily: styles[getThisDocStyle()]['fontFamily'],
     weight: 600
   }
 };
 
-const textStyle_HEADING_SEC_UPDATE = {
-  fontSize: {
-    magnitude: 10,
-    unit: 'PT'
-  },
-  weightedFontFamily: {
-    fontFamily: config_fontFamily,
-    weight: 600
-  }
-};
+// const textStyle_HEADING_SEC_UPDATE = {
+//   fontSize: {
+//     magnitude: 10,
+//     unit: 'PT'
+//   },
+//   weightedFontFamily: {
+//     fontFamily: styles[getThisDocStyle()]['fontFamily'],
+//     weight: 600
+//   }
+// };
 
 function formatHeader(onlyHeader = true) {
   let ui = DocumentApp.getUi();
@@ -105,7 +105,7 @@ function insertHeader(requests, documentId) {
           documentStyle: {
             useFirstPageHeaderFooter: true,
             pageNumberStart: 0,
-            marginHeader: { magnitude: config_MARGIN_HEADER_cm * cmTOpt, unit: 'PT' }
+            marginHeader: { magnitude: styles[getThisDocStyle()]['MARGIN_HEADER_cm'] * cmTOpt, unit: 'PT' }
           },
           fields: 'pageNumberStart,useFirstPageHeaderFooter,marginHeader'
         }
@@ -177,7 +177,7 @@ function updateHeader(requests, documentId, document) {
           documentStyle: {
             useFirstPageHeaderFooter: true,
             pageNumberStart: 0,
-            marginHeader: { magnitude: config_MARGIN_HEADER_cm * cmTOpt, unit: 'PT' }
+            marginHeader: { magnitude: styles[getThisDocStyle()]['MARGIN_HEADER_cm'] * cmTOpt, unit: 'PT' }
           },
           fields: 'pageNumberStart,useFirstPageHeaderFooter,marginHeader'
         }
@@ -204,7 +204,7 @@ function updateHeader(requests, documentId, document) {
       item.paragraph.elements.forEach(function (item) {
 
         item.textRun.textStyle['fontSize'] = { magnitude: 10, unit: 'PT' };
-        item.textRun.textStyle['weightedFontFamily'] = { fontFamily: config_fontFamily, weight: 600 };
+        item.textRun.textStyle['weightedFontFamily'] = { fontFamily: styles[getThisDocStyle()]['fontFamily'], weight: 600 };
 
         if (item.startIndex == null) {
           item.startIndex = 0;

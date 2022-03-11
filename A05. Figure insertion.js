@@ -25,7 +25,7 @@ let textStyle_FIGURE_PART_1 = {
   bold: true,
   italic: false,
   weightedFontFamily: {
-    fontFamily: config_fontFamily,
+    fontFamily: styles[getThisDocStyle()]['fontFamily'],
     weight: 400
   }
 };
@@ -43,7 +43,7 @@ let textStyle_FIGURE_PART_2 = {
   bold: false,
   italic: true,
   weightedFontFamily: {
-    fontFamily: config_fontFamily,
+    fontFamily: styles[getThisDocStyle()]['fontFamily'],
     weight: 400
   }
 };
@@ -61,7 +61,7 @@ let textStyle_FIGURE_CONTENT = {
   bold: false,
   italic: false,
   weightedFontFamily: {
-    fontFamily: config_fontFamily,
+    fontFamily: styles[getThisDocStyle()]['fontFamily'],
     weight: 400
   }
 };

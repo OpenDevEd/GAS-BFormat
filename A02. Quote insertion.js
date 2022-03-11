@@ -24,7 +24,7 @@ let paragraphStyle_QUOTE_1 = {
     dashStyle: 'SOLID',
     color: {
       color: {
-        rgbColor: hexToRGB(config_font_color)
+        rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
       }
     },
   }
@@ -51,7 +51,7 @@ let paragraphStyle_QUOTE_2 = {
     dashStyle: 'SOLID',
     color: {
       color: {
-        rgbColor: hexToRGB(config_font_color)
+        rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
       }
     },
   }
@@ -60,7 +60,7 @@ let paragraphStyle_QUOTE_2 = {
 let textStyle_QUOTE = {
   foregroundColor: {
     color: {
-      rgbColor: hexToRGB(config_font_color)
+      rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
     }
   },
   fontSize: {
@@ -69,7 +69,7 @@ let textStyle_QUOTE = {
   },
   bold: true,
   weightedFontFamily: {
-    fontFamily: config_fontFamily,
+    fontFamily: styles[getThisDocStyle()]['fontFamily'],
     weight: 400
   }
 };

@@ -18,7 +18,7 @@ const tableStyles = {
     },
     bold: true,
     weightedFontFamily: {
-      fontFamily: config_fontFamily,
+      fontFamily: styles[getThisDocStyle()]['fontFamily'],
       weight: 400
     }
   },
@@ -29,7 +29,7 @@ const tableStyles = {
     },
     bold: false,
     weightedFontFamily: {
-      fontFamily: config_fontFamily,
+      fontFamily: styles[getThisDocStyle()]['fontFamily'],
       weight: 400
     }
   }
@@ -56,7 +56,7 @@ let tableStyle_ORANGE_BORDER = {
   dashStyle: 'SOLID',
   color: {
     color: {
-      rgbColor: hexToRGB(config_font_color)
+      rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
     }
   },
 };
@@ -78,7 +78,7 @@ const paragraphStyle_TABLE_HEADING = {
 const textStyle_TABLE_HEADING_PART_1 = {
   foregroundColor: {
     color: {
-      rgbColor: hexToRGB(config_font_color)
+      rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
     }
   },
   fontSize: {
@@ -88,7 +88,7 @@ const textStyle_TABLE_HEADING_PART_1 = {
   bold: true,
   italic: false,
   weightedFontFamily: {
-    fontFamily: config_fontFamily,
+    fontFamily: styles[getThisDocStyle()]['fontFamily'],
     weight: 400
   }
 };
@@ -96,7 +96,7 @@ const textStyle_TABLE_HEADING_PART_1 = {
 const textStyle_TABLE_HEADING_PART_2 = {
   foregroundColor: {
     color: {
-      rgbColor: hexToRGB(config_font_color)
+      rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
     }
   },
   fontSize: {
@@ -106,7 +106,7 @@ const textStyle_TABLE_HEADING_PART_2 = {
   bold: false,
   italic: true,
   weightedFontFamily: {
-    fontFamily: config_fontFamily,
+    fontFamily: styles[getThisDocStyle()]['fontFamily'],
     weight: 400
   }
 };

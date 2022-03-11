@@ -5,7 +5,7 @@ const paragraphStyle_FOOTER_SEC = {
 const textStyle_FOOTER_SEC = {
   foregroundColor: {
     color: {
-      rgbColor: hexToRGB(config_font_color)
+      rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
     }
   },
   fontSize: {
@@ -14,21 +14,22 @@ const textStyle_FOOTER_SEC = {
   },
   bold: false,
   weightedFontFamily: {
-    fontFamily: config_fontFamily,
+    fontFamily: styles[getThisDocStyle()]['fontFamily'],
     weight: 400
   }
 };
 
-const textStyle_FOOTER_SEC_UPDATE = {
-  fontSize: {
-    magnitude: 10,
-    unit: 'PT'
-  },
-  weightedFontFamily: {
-    fontFamily: config_fontFamily,
-    weight: 400
-  }
-};
+// delete
+//const textStyle_FOOTER_SEC_UPDATE = {
+//  fontSize: {
+//    magnitude: 10,
+//    unit: 'PT'
+//  },
+//  weightedFontFamily: {
+//    fontFamily: styles[getThisDocStyle()]['fontFamily'],
+//    weight: 400
+//  }
+//};
 
 function formatFooter(onlyFooter = true) {
 
@@ -115,7 +116,7 @@ function insertFooter(requests, documentId, title) {
           documentStyle: {
             useFirstPageHeaderFooter: true,
             pageNumberStart: 0,
-            marginFooter: { magnitude: config_MARGIN_FOOTER_cm * cmTOpt, unit: 'PT' }
+            marginFooter: { magnitude: styles[getThisDocStyle()]['MARGIN_FOOTER_cm'] * cmTOpt, unit: 'PT' }
           },
           fields: 'pageNumberStart,useFirstPageHeaderFooter,marginFooter'
         }
@@ -158,7 +159,7 @@ function updateFooter(requests, documentId, document, title) {
           documentStyle: {
             useFirstPageHeaderFooter: true,
             pageNumberStart: 0,
-            marginFooter: { magnitude: config_MARGIN_FOOTER_cm * cmTOpt, unit: 'PT' }            
+            marginFooter: { magnitude: styles[getThisDocStyle()]['MARGIN_FOOTER_cm'] * cmTOpt, unit: 'PT' }            
           },
           fields: 'pageNumberStart,useFirstPageHeaderFooter,marginFooter'
         }
@@ -248,7 +249,8 @@ function updateFooter(requests, documentId, document, title) {
 
 function helpFooterUpdate(footerId, item, textRunOrAutoText, requests) {
   textRunOrAutoText.textStyle['fontSize'] = { magnitude: 10, unit: 'PT' };
-  textRunOrAutoText.textStyle['weightedFontFamily'] = { fontFamily: config_fontFamily, weight: 400 };
+  textRunOrAutoText.textStyle['weightedFontFamily'] = { fontFamily: styles[getThisDocStyle()]['fontFamily'], weight: 400 };
+  
 
   if (item.startIndex == null) {
     item.startIndex = 0;
