@@ -15,7 +15,7 @@ function onOpen(e) {
 
   const thisDocStyle = getDefaultStyle();
 
-  const subMenu = DocumentApp.getUi().createMenu('More styles');
+  const subMenu = DocumentApp.getUi().createMenu('Apply more styles');
 
   let selectedStyleMarker = '';
   for (let styleName in styles) {
