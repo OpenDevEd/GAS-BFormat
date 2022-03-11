@@ -26,7 +26,7 @@ function onOpen(e) {
     .addItem('Why can I not use undo?', 'helpPopupUndo')
     .addItem('Help for setting default styles', 'setDefaultStylesManually')
     .addSeparator()
-    .addItem('Use default: ' + styles[thisDocStyle]['name'], 'defaultStyleReport')
+    .addItem('Apply style: ' + styles[thisDocStyle]['name'], 'defaultStyleReport')
     .addSubMenu(subMenu)
     .addItem('Format text like Heading 1', 'formatTextLikeH1')
     .addItem('Reformat headings for tables, figures, boxes', 'reformatHeadings5and6') //TODO
