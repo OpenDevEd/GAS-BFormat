@@ -7,7 +7,7 @@ const paragraphStyle_HEADING_SEC = {
     },
     color: {
       color: {
-        rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
+        rgbColor: hexToRGB(styles[ACTIVE_STYLE]['main_heading_font_color'])
       }
     },
     padding: {
@@ -29,36 +29,39 @@ const textStyle_HEADING_SEC = {
     }
   },
   fontSize: {
-    magnitude: 10,
+    magnitude: styles[ACTIVE_STYLE]['header_font_size'],
     unit: 'PT'
   },
   bold: false,
   weightedFontFamily: {
-    fontFamily: styles[getThisDocStyle()]['fontFamily'],
+    fontFamily: styles[ACTIVE_STYLE]['fontFamily'],
     weight: 600
   }
 };
 
-// const textStyle_HEADING_SEC_UPDATE = {
-//   fontSize: {
-//     magnitude: 10,
-//     unit: 'PT'
-//   },
-//   weightedFontFamily: {
-//     fontFamily: styles[getThisDocStyle()]['fontFamily'],
-//     weight: 600
-//   }
-// };
-
 function formatHeader(onlyHeader = true) {
-  let ui = DocumentApp.getUi();
-  let requests = [];
+
+
+  // Detect header text
+  let headerText = '';
+  if (styles[ACTIVE_STYLE]['title_position'] == 'header') {
+    headerText = getDocumentTitle();
+  }
+  if (headerText == '') {
+    headerText = styles[ACTIVE_STYLE]['header_text'];
+  }
+  // End. Detect header text
+
+
+  
+  const ui = DocumentApp.getUi();
+  const requests = [];
   documentId = DocumentApp.getActiveDocument().getId();
   document = Docs.Documents.get(documentId);
 
   let result;
   if (document.documentStyle.defaultHeaderId == null) {
-    result = insertHeader(requests, documentId);
+    result = insertHeader(requests, documentId, headerText);
   } else {
     result = updateHeader(requests, documentId, document);
   }
@@ -75,9 +78,9 @@ function formatHeader(onlyHeader = true) {
   return { status: 'ok', requests: requests };
 }
 
-function insertHeader(requests, documentId) {
+function insertHeader(requests, documentId, headerText) {
   try {
-    let requests2 = [];
+    const requests2 = [];
     requests2.push(
       {
         createHeader: {
@@ -90,7 +93,7 @@ function insertHeader(requests, documentId) {
     }, documentId);
 
 
-    let document = Docs.Documents.get(documentId);
+    const document = Docs.Documents.get(documentId);
 
     let headerId;
     if (document.documentStyle.defaultHeaderId == null) {
@@ -99,13 +102,15 @@ function insertHeader(requests, documentId) {
       headerId = document.documentStyle.defaultHeaderId;
     }
 
+
+    const headerTextLength = headerText.length;
     requests.push(
       {
         updateDocumentStyle: {
           documentStyle: {
             useFirstPageHeaderFooter: true,
             pageNumberStart: 0,
-            marginHeader: { magnitude: styles[getThisDocStyle()]['MARGIN_HEADER_cm'] * cmTOpt, unit: 'PT' }
+            marginHeader: { magnitude: styles[ACTIVE_STYLE]['MARGIN_HEADER_cm'] * cmTOpt, unit: 'PT' }
           },
           fields: 'pageNumberStart,useFirstPageHeaderFooter,marginHeader'
         }
@@ -116,7 +121,7 @@ function insertHeader(requests, documentId) {
             segmentId: headerId,
             index: 0
           },
-          text: 'EdTech Hub'
+          text: headerText
         }
       },
       {
@@ -125,7 +130,7 @@ function insertHeader(requests, documentId) {
           range: {
             segmentId: headerId,
             startIndex: 0,
-            endIndex: 10
+            endIndex: headerTextLength
           },
           fields: formFieldsString(paragraphStyle_HEADING_SEC)
         }
@@ -136,7 +141,7 @@ function insertHeader(requests, documentId) {
           range: {
             segmentId: headerId,
             startIndex: 0,
-            endIndex: 10
+            endIndex: headerTextLength
           },
           fields: formFieldsString(textStyle_HEADING_SEC)
         }
@@ -153,7 +158,7 @@ function insertHeader(requests, documentId) {
 
 function updateHeader(requests, documentId, document) {
   try {
-    let headerId = document.documentStyle.defaultHeaderId;
+    const headerId = document.documentStyle.defaultHeaderId;
 
     // Check and remove firstPageHeader
     let firstPageHeaderId;
@@ -170,14 +175,14 @@ function updateHeader(requests, documentId, document) {
     // End. Check and remove firstPageHeader
 
     // Set up bottom border, different header for first page
-    let endIndex = document.headers[headerId].content[0].endIndex;
+    const endIndex = document.headers[headerId].content[0].endIndex;
     requests.push(
       {
         updateDocumentStyle: {
           documentStyle: {
             useFirstPageHeaderFooter: true,
             pageNumberStart: 0,
-            marginHeader: { magnitude: styles[getThisDocStyle()]['MARGIN_HEADER_cm'] * cmTOpt, unit: 'PT' }
+            marginHeader: { magnitude: styles[ACTIVE_STYLE]['MARGIN_HEADER_cm'] * cmTOpt, unit: 'PT' }
           },
           fields: 'pageNumberStart,useFirstPageHeaderFooter,marginHeader'
         }
@@ -197,14 +202,13 @@ function updateHeader(requests, documentId, document) {
     // End. Set up bottom border, different header for first page
 
 
-    // Set up Montserrat 10 pt
-    let wrongFontSize;
+    // Set up text style of header
     document.headers[headerId].content.forEach(function (item) {
 
       item.paragraph.elements.forEach(function (item) {
 
-        item.textRun.textStyle['fontSize'] = { magnitude: 10, unit: 'PT' };
-        item.textRun.textStyle['weightedFontFamily'] = { fontFamily: styles[getThisDocStyle()]['fontFamily'], weight: 600 };
+        item.textRun.textStyle['fontSize'] = { magnitude: styles[ACTIVE_STYLE]['header_font_size'], unit: 'PT' };
+        item.textRun.textStyle['weightedFontFamily'] = { fontFamily: styles[ACTIVE_STYLE]['fontFamily'], weight: 600 };
 
         if (item.startIndex == null) {
           item.startIndex = 0;
@@ -224,7 +228,7 @@ function updateHeader(requests, documentId, document) {
 
       });
     });
-    // End. Set up Montserrat 10 pt
+    // End. Set up text style of header
 
     Docs.Documents.batchUpdate({ requests: requests }, documentId);
     return { status: 'ok' };

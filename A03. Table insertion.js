@@ -18,7 +18,7 @@ const tableStyles = {
     },
     bold: true,
     weightedFontFamily: {
-      fontFamily: styles[getThisDocStyle()]['fontFamily'],
+      fontFamily: styles[ACTIVE_STYLE]['fontFamily'],
       weight: 400
     }
   },
@@ -29,7 +29,7 @@ const tableStyles = {
     },
     bold: false,
     weightedFontFamily: {
-      fontFamily: styles[getThisDocStyle()]['fontFamily'],
+      fontFamily: styles[ACTIVE_STYLE]['fontFamily'],
       weight: 400
     }
   }
@@ -48,7 +48,7 @@ const tableStyle_TRANSPERENT_BORDER = {
   }
 };
 
-let tableStyle_ORANGE_BORDER = {
+const tableStyle_ORANGE_BORDER = {
   width: {
     magnitude: 1.0,
     unit: 'PT'
@@ -56,7 +56,7 @@ let tableStyle_ORANGE_BORDER = {
   dashStyle: 'SOLID',
   color: {
     color: {
-      rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
+      rgbColor: hexToRGB(styles[ACTIVE_STYLE]['main_heading_font_color'])
     }
   },
 };
@@ -78,7 +78,7 @@ const paragraphStyle_TABLE_HEADING = {
 const textStyle_TABLE_HEADING_PART_1 = {
   foregroundColor: {
     color: {
-      rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
+      rgbColor: hexToRGB(styles[ACTIVE_STYLE]['main_heading_font_color'])
     }
   },
   fontSize: {
@@ -88,7 +88,7 @@ const textStyle_TABLE_HEADING_PART_1 = {
   bold: true,
   italic: false,
   weightedFontFamily: {
-    fontFamily: styles[getThisDocStyle()]['fontFamily'],
+    fontFamily: styles[ACTIVE_STYLE]['fontFamily'],
     weight: 400
   }
 };
@@ -96,7 +96,7 @@ const textStyle_TABLE_HEADING_PART_1 = {
 const textStyle_TABLE_HEADING_PART_2 = {
   foregroundColor: {
     color: {
-      rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
+      rgbColor: hexToRGB(styles[ACTIVE_STYLE]['main_heading_font_color'])
     }
   },
   fontSize: {
@@ -106,7 +106,7 @@ const textStyle_TABLE_HEADING_PART_2 = {
   bold: false,
   italic: true,
   weightedFontFamily: {
-    fontFamily: styles[getThisDocStyle()]['fontFamily'],
+    fontFamily: styles[ACTIVE_STYLE]['fontFamily'],
     weight: 400
   }
 };
@@ -115,7 +115,7 @@ const textStyle_TABLE_HEADING_PART_2 = {
 // Return object that contains texts for cells, styles for cells, startIndex, endIndex for each cell
 // insertTable use the function
 function addTableParameters(numRows, numCols) {
-  let table = [];
+  const table = [];
   let previousCellPos = 1;
   for (let row = 0; row < numRows; row++) {
     table.push([]);
@@ -153,20 +153,20 @@ function addTableParameters(numRows, numCols) {
 // Insert table using Doc API
 // insertTable2x2, insertTable3x3, insertTable4x4 use the function
 function insertTable(numRows, numCols) {
-  let ui = DocumentApp.getUi();
+  const ui = DocumentApp.getUi();
   try {
-    let doc = DocumentApp.getActiveDocument();
-    let documentId = doc.getId();
+    const doc = DocumentApp.getActiveDocument();
+    const documentId = doc.getId();
 
-    let cursorPosition = detectCursorPosition(doc, documentId);
+    const cursorPosition = detectCursorPosition(doc, documentId);
     if (cursorPosition.status == 'error') {
       ui.alert(cursorPosition.message);
       return 0;
     }
 
-    let tableStartIndex = cursorPosition.endIndex;
+    const tableStartIndex = cursorPosition.endIndex;
 
-    let requests = [];
+    const requests = [];
 
     requests.push(
       {
@@ -216,7 +216,7 @@ function insertTable(numRows, numCols) {
       }
     );
 
-    let table = addTableParameters(numRows, numCols);
+    const table = addTableParameters(numRows, numCols);
     let textStyle;
     for (let row = numRows - 1; row >= 0; row--) {
       for (let col = numCols - 1; col >= 0; col--) {
@@ -306,6 +306,7 @@ function insertTable(numRows, numCols) {
         }
       }
     );
+ 
     Docs.Documents.batchUpdate({
       requests: requests
     }, documentId);

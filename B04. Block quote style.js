@@ -16,7 +16,7 @@ const textStyle_EXTRACTED_QUOTE_1 = {
   },
   italic: true,
   weightedFontFamily: {
-    fontFamily: styles[getThisDocStyle()]['fontFamily'],
+    fontFamily: styles[ACTIVE_STYLE]['fontFamily'],
     weight: 400
   }
 };
@@ -28,7 +28,7 @@ const textStyle_EXTRACTED_QUOTE_2 = {
   },
   italic: false,
   weightedFontFamily: {
-    fontFamily: styles[getThisDocStyle()]['fontFamily'],
+    fontFamily: styles[ACTIVE_STYLE]['fontFamily'],
     weight: 400
   }
 };

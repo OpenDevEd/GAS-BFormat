@@ -1,6 +1,6 @@
 const cmTOpt = 28.34645669;
 
-// Based on https://css-tricks.com/converting-color-spaces-in-javascript/#hex-to-rgb
+// The function below was adapted from https://css-tricks.com/converting-color-spaces-in-javascript/#hex-to-rgb
 // Convert Hex to RGB
 function hexToRGB(h) {
   let r = 0, g = 0, b = 0;

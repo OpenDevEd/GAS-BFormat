@@ -1,22 +1,22 @@
 function insertBox() {
-  let ui = DocumentApp.getUi();
+  const ui = DocumentApp.getUi();
   try {
-    let textBoxH5 = 'Figure 3. Some text. Single cell box.';
+    const textBoxH5 = 'Figure 3. Some text. Single cell box.';
 
-    let lenTextBoxH5 = textBoxH5.length;
+    const lenTextBoxH5 = textBoxH5.length;
     
-    let doc = DocumentApp.getActiveDocument();
-    let documentId = doc.getId();
+    const doc = DocumentApp.getActiveDocument();
+    const documentId = doc.getId();
 
-    let cursorPosition = detectCursorPosition(doc, documentId);
+    const cursorPosition = detectCursorPosition(doc, documentId);
     if (cursorPosition.status == 'error') {
       ui.alert(cursorPosition.message);
       return 0;
     }
 
-    let insertStartIndex = cursorPosition.endIndex;
+    const insertStartIndex = cursorPosition.endIndex;
 
-    let requests = [];
+    const requests = [];
 
 tableStyle_ORANGE_BORDER.width.magnitude = 1.5;
 

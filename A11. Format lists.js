@@ -1,8 +1,8 @@
 function formatListsPart1(onlyLists = true, requests = [], body, document, documentId) {
-  let ui = DocumentApp.getUi();
+  const ui = DocumentApp.getUi();
   try {
     if (onlyLists) {
-      let doc = DocumentApp.getActiveDocument();
+      const doc = DocumentApp.getActiveDocument();
       body = doc.getBody();
       documentId = doc.getId();
       document = Docs.Documents.get(documentId);
@@ -14,13 +14,13 @@ function formatListsPart1(onlyLists = true, requests = [], body, document, docum
     let glyphType;
     let lists = body.getListItems();
     lists.forEach(function (item) {
-      let nestingLevel = item.getNestingLevel();
-      let listId = item.getListId();
+      const nestingLevel = item.getNestingLevel();
+      const listId = item.getListId();
       item.setLineSpacing(1.15);
 
       if (document.lists[listId].listProperties.nestingLevels[nestingLevel].textStyle.foregroundColor) {
         if (document.lists[listId].listProperties.nestingLevels[nestingLevel].textStyle.foregroundColor.color.rgbColor) {
-          let glyphColor = document.lists[listId].listProperties.nestingLevels[nestingLevel].textStyle.foregroundColor.color.rgbColor;
+          const glyphColor = document.lists[listId].listProperties.nestingLevels[nestingLevel].textStyle.foregroundColor.color.rgbColor;
           if (!(glyphColor.blue == null && glyphColor.green == null && glyphColor.red == null)) {
             listItemsWarningTextColor += '\n' + item.getText();
           }
@@ -65,10 +65,10 @@ function formatListsPart1(onlyLists = true, requests = [], body, document, docum
 
 
 function formatListsPart2(onlyLists = true, requests = [], document, documentId) {
-  let ui = DocumentApp.getUi();
+  const ui = DocumentApp.getUi();
   try {
     let addRequest;
-    let bodyElements = document.body.content;
+    const bodyElements = document.body.content;
     for (let i in bodyElements) {
       addRequest = false;
       if (bodyElements[i].paragraph) {

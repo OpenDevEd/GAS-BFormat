@@ -1,5 +1,5 @@
 function setDefaultStylesManually() {
-  var htmlOutput = HtmlService
+  const htmlOutput = HtmlService
     .createHtmlOutput(`<p>After applying your preferred style, use the menu options below to set your preferred style as default:</p>
     <ul>
     <li>Format > Paragraph Styles > Options > Save as my default styles</li>

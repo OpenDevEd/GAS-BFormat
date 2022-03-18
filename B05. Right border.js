@@ -12,7 +12,7 @@ const paragraphStyle_LEFT_BORDER = {
     dashStyle: 'SOLID',
     color: {
       color: {
-        rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
+        rgbColor: hexToRGB(styles[ACTIVE_STYLE]['main_heading_font_color'])
       }
     }
   }
@@ -20,26 +20,26 @@ const paragraphStyle_LEFT_BORDER = {
 
 
 function leftBorderParagraph() {
-  let ui = DocumentApp.getUi();
-  let requests = [];
+  const ui = DocumentApp.getUi();
+  const requests = [];
   try {
-    let doc = DocumentApp.getActiveDocument();
-    let documentId = doc.getId();
+    const doc = DocumentApp.getActiveDocument();
+    const documentId = doc.getId();
 
     // Create namedRange for selected paragraph
-    let startEndIndex = getSelectionCreateNamedRange(doc, documentId, 'PARAGRAPH');
+    const startEndIndex = getSelectionCreateNamedRange(doc, documentId, 'PARAGRAPH');
     if (startEndIndex.status == 'error') {
       ui.alert(startEndIndex.message);
       return 0;
     }
 
-    let startIndex = startEndIndex.startIndex;
-    let endIndex = startEndIndex.endIndex;
-    let rangeName = startEndIndex.rangeName;
+    const startIndex = startEndIndex.startIndex;
+    const endIndex = startEndIndex.endIndex;
+    const rangeName = startEndIndex.rangeName;
 
 
-    let document = Docs.Documents.get(documentId);
-    let bodyElements = document.body.content;
+    const document = Docs.Documents.get(documentId);
+    const bodyElements = document.body.content;
 
 
     for (let i in bodyElements) {
@@ -78,11 +78,9 @@ function leftBorderParagraph() {
           }
         }
       }
-
-
-      // }
+      // End. If body element contains paragraph
     }
-    // End. If body element contains paragraph
+    
 
     requests.push({
       deleteNamedRange: {

@@ -3,7 +3,7 @@ const zeroMagnitude = {
   unit: 'PT'
 };
 
-let paragraphStyle_QUOTE_1 = {
+const paragraphStyle_QUOTE_1 = {
   namedStyleType: 'NORMAL_TEXT',
   indentStart: { magnitude: 56.692913385826756, unit: 'PT' },
   indentEnd: { magnitude: 75.75, unit: 'PT' },
@@ -24,13 +24,13 @@ let paragraphStyle_QUOTE_1 = {
     dashStyle: 'SOLID',
     color: {
       color: {
-        rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
+        rgbColor: hexToRGB(styles[ACTIVE_STYLE]['main_heading_font_color'])
       }
     },
   }
 };
 
-let paragraphStyle_QUOTE_2 = {
+const paragraphStyle_QUOTE_2 = {
   namedStyleType: 'NORMAL_TEXT',
   indentStart: { magnitude: 56.692913385826756, unit: 'PT' },
   indentEnd: { magnitude: 75.75, unit: 'PT' },
@@ -51,16 +51,16 @@ let paragraphStyle_QUOTE_2 = {
     dashStyle: 'SOLID',
     color: {
       color: {
-        rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
+        rgbColor: hexToRGB(styles[ACTIVE_STYLE]['main_heading_font_color'])
       }
     },
   }
 };
 
-let textStyle_QUOTE = {
+const textStyle_QUOTE = {
   foregroundColor: {
     color: {
-      rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
+      rgbColor: hexToRGB(styles[ACTIVE_STYLE]['main_heading_font_color'])
     }
   },
   fontSize: {
@@ -69,7 +69,7 @@ let textStyle_QUOTE = {
   },
   bold: true,
   weightedFontFamily: {
-    fontFamily: styles[getThisDocStyle()]['fontFamily'],
+    fontFamily: styles[ACTIVE_STYLE]['fontFamily'],
     weight: 400
   }
 };
@@ -108,20 +108,20 @@ function addQuoteAPIrequest(requests, text, insertIndex, paragraphStyle, textSty
 
 
 function insertPullQuote() {
-  let ui = DocumentApp.getUi();
-  let doc = DocumentApp.getActiveDocument();
-  let documentId = doc.getId();
+  const ui = DocumentApp.getUi();
+  const doc = DocumentApp.getActiveDocument();
+  const documentId = doc.getId();
 
-  let cursorPosition = detectCursorPosition(doc, documentId);
+  const cursorPosition = detectCursorPosition(doc, documentId);
   if (cursorPosition.status == 'error') {
     ui.alert(cursorPosition.message);
     return 0;
   }
 
-  let tableStartIndex = cursorPosition.endIndex;
-  let numRows = 1;
-  let numCols = 1;
-  let requests = [];
+  const tableStartIndex = cursorPosition.endIndex;
+  const numRows = 1;
+  const numCols = 1;
+  const requests = [];
 
   requests.push(
     {
@@ -158,9 +158,9 @@ function insertPullQuote() {
     }
   );
 
-  let text1 = '“Pull quote would go here, like this.”\n';
+  const text1 = '“Pull quote would go here, like this.”\n';
   addQuoteAPIrequest(requests, text1, tableStartIndex + 4, paragraphStyle_QUOTE_1, textStyle_QUOTE);
-  let text2 = '– Author, 2021';
+  const text2 = '– Author, 2022';
   addQuoteAPIrequest(requests, text2, tableStartIndex + 4 + text1.length, paragraphStyle_QUOTE_2, textStyle_QUOTE);
 
   requests.push(

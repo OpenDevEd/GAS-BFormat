@@ -1,11 +1,11 @@
-let h1H2styles = {
+const h1H2styles = {
   paragraphStyle_HEADING_1: {
     namedStyleType: 'HEADING_1'
   },
   textStyle_HEADING_1: {
     foregroundColor: {
       color: {
-        rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
+        rgbColor: hexToRGB(styles[ACTIVE_STYLE]['main_heading_font_color'])
       }
     },
     fontSize: {
@@ -14,7 +14,7 @@ let h1H2styles = {
     },
     bold: true,
     weightedFontFamily: {
-      fontFamily: styles[getThisDocStyle()]['fontFamily'],
+      fontFamily: styles[ACTIVE_STYLE]['fontFamily'],
       weight: 400
     }
   },
@@ -44,31 +44,31 @@ let h1H2styles = {
     },
     bold: true,
     weightedFontFamily: {
-      fontFamily: styles[getThisDocStyle()]['fontFamily'],
+      fontFamily: styles[ACTIVE_STYLE]['fontFamily'],
       weight: 400
     }
   }
 }
 
 function formatTextLikeH1() {
-  let ui = DocumentApp.getUi();
+  const ui = DocumentApp.getUi();
   try {
-    let doc = DocumentApp.getActiveDocument();
-    let documentId = doc.getId();
+    const doc = DocumentApp.getActiveDocument();
+    const documentId = doc.getId();
 
     // Create namedRange for selected paragraph
-    let startEndIndex = getSelectionCreateNamedRange(doc, documentId, 'PARAGRAPH');
+    const startEndIndex = getSelectionCreateNamedRange(doc, documentId, 'PARAGRAPH');
     if (startEndIndex.status == 'error') {
       ui.alert(startEndIndex.message);
       return 0;
     }
 
-    let startIndex = startEndIndex.startIndex;
-    let endIndex = startEndIndex.endIndex;
-    let rangeName = startEndIndex.rangeName;
+    const startIndex = startEndIndex.startIndex;
+    const endIndex = startEndIndex.endIndex;
+    const rangeName = startEndIndex.rangeName;
 
     h1H2styles.paragraphStyle_HEADING_1.namedStyleType = 'NORMAL_TEXT';
-    let requests = [{
+    const requests = [{
       updateParagraphStyle: {
         paragraphStyle: h1H2styles.paragraphStyle_HEADING_1,
         range: {
@@ -106,21 +106,21 @@ function formatTextLikeH1() {
 // normal text, footnotes, lists, remove underline from links
 // Add/edit header and footer
 function defaultStyleReport() {
-  let ui = DocumentApp.getUi();
+  const ui = DocumentApp.getUi();
   try {
 
-    const config_fontFamily = styles[getThisDocStyle()]['fontFamily'];
+    const config_fontFamily = styles[ACTIVE_STYLE]['fontFamily'];
 
-    let requests = [];
+    const requests = [];
     let updateParagraphStyle;
-    let doc = DocumentApp.getActiveDocument();
-    let body = doc.getBody();
-    let documentId = doc.getId();
+    const doc = DocumentApp.getActiveDocument();
+    const body = doc.getBody();
+    const documentId = doc.getId();
 
     let document = Docs.Documents.get(documentId);
 
     // Set up body text (named style type NORMAL_TEXT) attributes
-    let normalTextStyle = {};
+    const normalTextStyle = {};
     normalTextStyle[DocumentApp.Attribute.FONT_FAMILY] = config_fontFamily;
     normalTextStyle[DocumentApp.Attribute.FONT_SIZE] = 12;
     normalTextStyle[DocumentApp.Attribute.SPACING_BEFORE] = 0;
@@ -131,19 +131,19 @@ function defaultStyleReport() {
     // End. Set up body text (named style type NORMAL_TEXT) attributes
 
     // Set up heading 1 (named style type HEADING_1) attributes
-    let heading1TextStyle = {};
+    const heading1TextStyle = {};
     heading1TextStyle[DocumentApp.Attribute.FONT_FAMILY] = config_fontFamily;
     heading1TextStyle[DocumentApp.Attribute.FONT_SIZE] = 21;
     heading1TextStyle[DocumentApp.Attribute.SPACING_BEFORE] = 14;
     heading1TextStyle[DocumentApp.Attribute.SPACING_AFTER] = 10;
     heading1TextStyle[DocumentApp.Attribute.LINE_SPACING] = 1.15;
-    heading1TextStyle[DocumentApp.Attribute.FOREGROUND_COLOR] = styles[getThisDocStyle()]['main_heading_font_color'];
+    heading1TextStyle[DocumentApp.Attribute.FOREGROUND_COLOR] = styles[ACTIVE_STYLE]['main_heading_font_color'];
     heading1TextStyle[DocumentApp.Attribute.BOLD] = true;
     body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING1, heading1TextStyle);
     // End. Set up heading 1 (named style type HEADING_1) attributes   
 
     // Set up heading 2 (named style type HEADING_2) attributes
-    let heading2TextStyle = {};
+    const heading2TextStyle = {};
     heading2TextStyle[DocumentApp.Attribute.FONT_FAMILY] = config_fontFamily;
     heading2TextStyle[DocumentApp.Attribute.FONT_SIZE] = 16;
     heading2TextStyle[DocumentApp.Attribute.SPACING_BEFORE] = 14;
@@ -155,20 +155,20 @@ function defaultStyleReport() {
     // End. Set up heading 1 (named style type HEADING_1) attributes   
 
     // Set up heading 5(6) (named style type HEADING_5) attributes
-    let heading5TextStyle = {};
+    const heading5TextStyle = {};
     heading5TextStyle[DocumentApp.Attribute.FOREGROUND_COLOR] = '#000000';
     body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING5, heading5TextStyle);
     body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING6, heading5TextStyle);
     // End. Set up heading 5(6) (named style type HEADING_5) attributes
 
     // Set up footnotes attributes
-    let footnoteStyle = {};
+    const footnoteStyle = {};
     footnoteStyle[DocumentApp.Attribute.FONT_FAMILY] = config_fontFamily;
     footnoteStyle[DocumentApp.Attribute.FONT_SIZE] = 10;
     footnoteStyle[DocumentApp.Attribute.SPACING_BEFORE] = 0;
     footnoteStyle[DocumentApp.Attribute.SPACING_AFTER] = 10;
     footnoteStyle[DocumentApp.Attribute.LINE_SPACING] = 1.15;
-    let footnotes = body.getFootnotes();
+    const footnotes = body.getFootnotes();
     footnotes.forEach(function (item) {
       item.getFootnoteContents().getParagraphs().forEach(function (item) {
         item.setAttributes(footnoteStyle);
@@ -189,21 +189,22 @@ function defaultStyleReport() {
     //formatListsPart2(false, requests, document, documentId);
 
     Logger.log('formatHeader');
-    let resultHeader = formatHeader();
+    const resultHeader = formatHeader();
     if (resultHeader.status == 'error') {
       ui.alert(resultHeader.message);
     }
 
     Logger.log('formatFooter');
-    let result = formatFooter();
+    const result = formatFooter();
     if (result.status == 'error') {
       ui.alert(result.message);
     }
 
-    document = Docs.Documents.get(documentId);
-    let bodyElements = document.body.content;
 
-    let allFootnotes = document.footnotes;
+    document = Docs.Documents.get(documentId);
+    const bodyElements = document.body.content;
+
+    const allFootnotes = document.footnotes;
     for (let footnoteId in allFootnotes) {
       allFootnotes[footnoteId].content.forEach(function (content) {
         content.paragraph.elements.forEach(function (item) {
@@ -213,8 +214,7 @@ function defaultStyleReport() {
       });
     }
 
-
-    let arrayH1H2 = [];
+    const arrayH1H2 = [];
     let spaceAfterTableParagraph = true;
     let paragraphText = '';
     let emptyLineAfterTable;
@@ -255,9 +255,9 @@ function defaultStyleReport() {
         }
         // End. If paragraph is list item.
 
-        let namedStyleType = bodyElements[i].paragraph.paragraphStyle.namedStyleType;
-        let elements = bodyElements[i].paragraph.elements;
-        let lastElement = elements.length - 1;
+        const namedStyleType = bodyElements[i].paragraph.paragraphStyle.namedStyleType;
+        const elements = bodyElements[i].paragraph.elements;
+        const lastElement = elements.length - 1;
 
         if (namedStyleType == 'HEADING_1' || namedStyleType == 'HEADING_2') {
           // If paragraph has HEADING_1 or HEADING_2 named style, we push it in array arrayH1H2
@@ -270,8 +270,8 @@ function defaultStyleReport() {
           // If paragraph has NORMAL_TEXT named style
 
           // Check paragraph's style
-          let spaceBelow = bodyElements[i].paragraph.paragraphStyle.spaceBelow;
-          let spaceAbove = bodyElements[i].paragraph.paragraphStyle.spaceAbove;
+          const spaceBelow = bodyElements[i].paragraph.paragraphStyle.spaceBelow;
+          const spaceAbove = bodyElements[i].paragraph.paragraphStyle.spaceAbove;
 
           let itIsExtractedQuote = false;
 
@@ -303,10 +303,6 @@ function defaultStyleReport() {
             }
           }
 
-
-
-          // Logger.log('elements[0].startIndex' + elements[0].startIndex);
-          // Logger.log('elements[lastElement].endIndex' + elements[lastElement].endIndex)
           if (updateParagraphStyle && !itIsExtractedQuote && !emptyLineAfterTable) {
             requests.push({
               updateParagraphStyle: {
@@ -363,11 +359,10 @@ function defaultStyleReport() {
     //  formatListsPart2(false, requests, document, documentId);
 
 
-    let l = requests.length;
-    for (let i = l - 1; i >= 0; i--) {
+    const l = requests.length - 1;
+    for (let i = l; i >= 0; i--) {
       if (requests[i].updateParagraphStyle) {
         if (!requests[i].updateParagraphStyle.paragraphStyle) {
-          Logger.log(i + 'splice' + JSON.stringify(requests[i]));
           requests.splice(i, 1);
         }
       }
@@ -390,11 +385,9 @@ function defaultStyleReport() {
 // defaultStyleReport and formatListsPart2 use the function
 function checkElementOfParagraph(requests, item, updateParagraphStyle) {
 
-  const config_fontFamily = styles[getThisDocStyle()]['fontFamily'];
+  const config_fontFamily = styles[ACTIVE_STYLE]['fontFamily'];
 
-  let normalTextForegroundColor, likeH1textColor;
-  likeH1textColor = false;
-  wrongFontSize = false;
+  let normalTextForegroundColor, likeH1textColor = false, wrongFontSize = false;
   if (item.textRun) {
 
     // Remove underline from hyperlinks

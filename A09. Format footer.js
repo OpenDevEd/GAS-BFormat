@@ -5,54 +5,54 @@ const paragraphStyle_FOOTER_SEC = {
 const textStyle_FOOTER_SEC = {
   foregroundColor: {
     color: {
-      rgbColor: hexToRGB(styles[getThisDocStyle()]['main_heading_font_color'])
+      rgbColor: hexToRGB(styles[ACTIVE_STYLE]['main_heading_font_color'])
     }
   },
   fontSize: {
-    magnitude: 10,
+    magnitude: styles[ACTIVE_STYLE]['footer_font_size'],
     unit: 'PT'
   },
   bold: false,
   weightedFontFamily: {
-    fontFamily: styles[getThisDocStyle()]['fontFamily'],
+    fontFamily: styles[ACTIVE_STYLE]['fontFamily'],
     weight: 400
   }
 };
 
-// delete
-//const textStyle_FOOTER_SEC_UPDATE = {
-//  fontSize: {
-//    magnitude: 10,
-//    unit: 'PT'
-//  },
-//  weightedFontFamily: {
-//    fontFamily: styles[getThisDocStyle()]['fontFamily'],
-//    weight: 400
-//  }
-//};
+
+// Retrieve title paragraph
+function getDocumentTitle() {
+  let title = '';
+  const par = DocumentApp.getActiveDocument().getBody().getParagraphs();
+  let titleParagraphFound = false;
+  for (let i in par) {
+    if (par[i].getHeading() == DocumentApp.ParagraphHeading.TITLE) {
+      title += par[i].getText();
+      titleParagraphFound = true;
+    } else if (titleParagraphFound === true) {
+      break;
+    }
+  }
+  return title;
+}
 
 function formatFooter(onlyFooter = true) {
 
-  let requests = [];
-  // Retrieve title of document
-  let title = '';
-  let par = DocumentApp.getActiveDocument().getBody().getParagraphs();
-  for (let i in par) {
-    if (par[i].getHeading() == DocumentApp.ParagraphHeading.TITLE) {
-      title += par[i].getText() + ' ';
-    }
-  }
-  // End. Retrieve title of document
+  const requests = [];
 
-  let ui = DocumentApp.getUi();
+  // Detect footer text
+  let title = '';
+  if (styles[ACTIVE_STYLE]['title_position'] == 'footer') {
+    title = getDocumentTitle();
+  }
+  if (title == '') {
+    title = styles[ACTIVE_STYLE]['footer_text'];
+  }
+  // End. Detect footer text
+
+  const ui = DocumentApp.getUi();
   documentId = DocumentApp.getActiveDocument().getId();
   document = Docs.Documents.get(documentId);
-
-  if (title == '') {
-    title = 'Title of document as shown on cover page';
-  }
-
-  title = title.trim();
 
   let result;
   if (document.documentStyle.defaultFooterId == null) {
@@ -90,7 +90,7 @@ function formatFooter(onlyFooter = true) {
 
 function insertFooter(requests, documentId, title) {
   try {
-    let requests2 = [];
+    const requests2 = [];
     requests2.push(
       {
         createFooter: {
@@ -100,7 +100,7 @@ function insertFooter(requests, documentId, title) {
     );
     Docs.Documents.batchUpdate({ requests: requests2 }, documentId);
 
-    let document = Docs.Documents.get(documentId);
+    const document = Docs.Documents.get(documentId);
 
     let footerId;
     if (document.documentStyle.defaultFooterId == null) {
@@ -109,14 +109,14 @@ function insertFooter(requests, documentId, title) {
       footerId = document.documentStyle.defaultFooterId;
     }
 
-    let requests = [];
+    const requests = [];
     requests.push(
       {
         updateDocumentStyle: {
           documentStyle: {
             useFirstPageHeaderFooter: true,
             pageNumberStart: 0,
-            marginFooter: { magnitude: styles[getThisDocStyle()]['MARGIN_FOOTER_cm'] * cmTOpt, unit: 'PT' }
+            marginFooter: { magnitude: styles[ACTIVE_STYLE]['MARGIN_FOOTER_cm'] * cmTOpt, unit: 'PT' }
           },
           fields: 'pageNumberStart,useFirstPageHeaderFooter,marginFooter'
         }
@@ -135,7 +135,7 @@ function insertFooter(requests, documentId, title) {
 
 function updateFooter(requests, documentId, document, title) {
   try {
-    let footerId = document.documentStyle.defaultFooterId;
+    const footerId = document.documentStyle.defaultFooterId;
 
     // Check and remove firstPageFooter
     let firstPageFooterId;
@@ -152,14 +152,14 @@ function updateFooter(requests, documentId, document, title) {
     // End. Check and remove firstPageFooter
 
     // Set up paragraph style and different footer for first page
-    let endIndex = document.footers[footerId].content[0].endIndex;
+    const endIndex = document.footers[footerId].content[0].endIndex;
     requests.push(
       {
         updateDocumentStyle: {
           documentStyle: {
             useFirstPageHeaderFooter: true,
             pageNumberStart: 0,
-            marginFooter: { magnitude: styles[getThisDocStyle()]['MARGIN_FOOTER_cm'] * cmTOpt, unit: 'PT' }            
+            marginFooter: { magnitude: styles[ACTIVE_STYLE]['MARGIN_FOOTER_cm'] * cmTOpt, unit: 'PT' }
           },
           fields: 'pageNumberStart,useFirstPageHeaderFooter,marginFooter'
         }
@@ -178,8 +178,7 @@ function updateFooter(requests, documentId, document, title) {
     );
     // End. Set up paragraph style and different footer for first page
 
-
-    // Set up Montserrat 10 pt
+    // Set up text style of footer
     let footerContent = '';
     let pageNumbersAdded = false;
 
@@ -199,7 +198,7 @@ function updateFooter(requests, documentId, document, title) {
         }
       });
     });
-    // End. Set up Montserrat 10 pt
+    // End. Set up text style of footer
 
     // Situation when footer is already added but doesn't contain text
     let footerContentExist = true;
@@ -222,7 +221,7 @@ function updateFooter(requests, documentId, document, title) {
 
       });
 
-      let removeRequests = [];
+      const removeRequests = [];
       for (let i in requests) {
         if (requests[i].updateParagraphStyle) {
           if (requests[i].updateParagraphStyle.range.segmentId == footerId) {
@@ -248,9 +247,8 @@ function updateFooter(requests, documentId, document, title) {
 
 
 function helpFooterUpdate(footerId, item, textRunOrAutoText, requests) {
-  textRunOrAutoText.textStyle['fontSize'] = { magnitude: 10, unit: 'PT' };
-  textRunOrAutoText.textStyle['weightedFontFamily'] = { fontFamily: styles[getThisDocStyle()]['fontFamily'], weight: 400 };
-  
+  textRunOrAutoText.textStyle['fontSize'] = { magnitude: styles[ACTIVE_STYLE]['footer_font_size'], unit: 'PT' };
+  textRunOrAutoText.textStyle['weightedFontFamily'] = { fontFamily: styles[ACTIVE_STYLE]['fontFamily'], weight: 400 };
 
   if (item.startIndex == null) {
     item.startIndex = 0;

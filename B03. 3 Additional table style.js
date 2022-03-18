@@ -1,5 +1,6 @@
+// Updates selected table
+// Sets cells padding = 4.25pt, cells vertical alignment = middle
 function formatTableBasic() {
-
   const ui = DocumentApp.getUi();
   try {
     const doc = DocumentApp.getActiveDocument();
@@ -14,7 +15,6 @@ function formatTableBasic() {
 
     const tableStartIndex = namedRange.startIndex;
     const tableEndIndex = namedRange.endIndex;
-
 
     const document = Docs.Documents.get(documentId);
 
@@ -32,7 +32,7 @@ function formatTableBasic() {
       }
     }
 
-    let requests = [];
+    const requests = [];
 
     const numRows = fTable.table.rows;
     const numCols = fTable.table.columns;

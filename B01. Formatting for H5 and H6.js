@@ -1,12 +1,12 @@
 function reformatHeadings5and6() {
   try {
-    let requests = [];
-    let doc = DocumentApp.getActiveDocument();
-    let documentId = doc.getId();
-    let document = Docs.Documents.get(documentId);
+    const requests = [];
+    const doc = DocumentApp.getActiveDocument();
+    const documentId = doc.getId();
+    const document = Docs.Documents.get(documentId);
 
     //  document = Docs.Documents.get(documentId);
-    let bodyElements = document.body.content;
+    const bodyElements = document.body.content;
 
     for (let i in bodyElements) {
       // If body element contains table

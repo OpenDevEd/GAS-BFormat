@@ -1,18 +1,18 @@
-let paragraphStyle_FIGURE_HEADING_5 = {
+const paragraphStyle_FIGURE_HEADING_5 = {
   namedStyleType: 'HEADING_5',
   spaceAbove: { magnitude: 10, unit: 'PT' },
   spaceBelow: { magnitude: 6, unit: 'PT' },
   alignment: 'START'
 };
 
-let paragraphStyle_FIGURE_CONTENT = {
+const paragraphStyle_FIGURE_CONTENT = {
   namedStyleType: 'NORMAL_TEXT',
   spaceAbove: { magnitude: 10, unit: 'PT' },
   spaceBelow: { magnitude: 6, unit: 'PT' },
   alignment: 'CENTER'
 };
 
-let textStyle_FIGURE_PART_1 = {
+const textStyle_FIGURE_PART_1 = {
   foregroundColor: {
     color: {
       rgbColor: { red: 0, green: 0, blue: 0 }
@@ -25,12 +25,12 @@ let textStyle_FIGURE_PART_1 = {
   bold: true,
   italic: false,
   weightedFontFamily: {
-    fontFamily: styles[getThisDocStyle()]['fontFamily'],
+    fontFamily: styles[ACTIVE_STYLE]['fontFamily'],
     weight: 400
   }
 };
 
-let textStyle_FIGURE_PART_2 = {
+const textStyle_FIGURE_PART_2 = {
   foregroundColor: {
     color: {
       rgbColor: { red: 0, green: 0, blue: 0 }
@@ -43,12 +43,12 @@ let textStyle_FIGURE_PART_2 = {
   bold: false,
   italic: true,
   weightedFontFamily: {
-    fontFamily: styles[getThisDocStyle()]['fontFamily'],
+    fontFamily: styles[ACTIVE_STYLE]['fontFamily'],
     weight: 400
   }
 };
 
-let textStyle_FIGURE_CONTENT = {
+const textStyle_FIGURE_CONTENT = {
   foregroundColor: {
     color: {
       rgbColor: {red:0, green:0, blue:0}
@@ -61,33 +61,36 @@ let textStyle_FIGURE_CONTENT = {
   bold: false,
   italic: false,
   weightedFontFamily: {
-    fontFamily: styles[getThisDocStyle()]['fontFamily'],
+    fontFamily: styles[ACTIVE_STYLE]['fontFamily'],
     weight: 400
   }
 };
 
+// Inserts text
+// Figure 1...
+// [figure content or Image here]
 function insertFigure1() {
-  let ui = DocumentApp.getUi();
+  const ui = DocumentApp.getUi();
   try {
-    let textFigure1H5 = 'Figure 1. Image Caption Title if needed. I am an image caption description. I tell people what the image is about. I also acknowledge the image source.\n';
-    let textFigureContentNormal = '[figure content or Image here]';
+    const textFigure1H5 = 'Figure 1. Image Caption Title if needed. I am an image caption description. I tell people what the image is about. I also acknowledge the image source.\n';
+    const textFigureContentNormal = '[figure content or Image here]';
 
-    let lenTextFigure1H5 = textFigure1H5.length;
-    let lenTextFigureContentNormal = textFigureContentNormal.length;
+    const lenTextFigure1H5 = textFigure1H5.length;
+    const lenTextFigureContentNormal = textFigureContentNormal.length;
 
 
-    let doc = DocumentApp.getActiveDocument();
-    let documentId = doc.getId();
+    const doc = DocumentApp.getActiveDocument();
+    const documentId = doc.getId();
 
-    let cursorPosition = detectCursorPosition(doc, documentId);
+    const cursorPosition = detectCursorPosition(doc, documentId);
     if (cursorPosition.status == 'error') {
       ui.alert(cursorPosition.message);
       return 0;
     }
 
-    let insertStartIndex = cursorPosition.endIndex;
+    const insertStartIndex = cursorPosition.endIndex;
 
-    let requests = [];
+    const requests = [];
 
     requests.push({
       insertText: {
@@ -180,28 +183,30 @@ function insertFigure1() {
   }
 }
 
+// Inserts 1 row 2 columns table
+// [figure content or Image here]  Figure 2...
 function insertFigure2() {
-  let ui = DocumentApp.getUi();
+  const ui = DocumentApp.getUi();
   try {
-    let textFigure2H5 = 'Figure 2. Image Caption Title if needed. I am an image caption description. I tell people what the image is about. I also acknowledge the image source.';
-    let textFigureContentNormal = '[figure content or Image here]';
+    const textFigure2H5 = 'Figure 2. Image Caption Title if needed. I am an image caption description. I tell people what the image is about. I also acknowledge the image source.';
+    const textFigureContentNormal = '[figure content or Image here]';
 
-    let lenTextFigure2H5 = textFigure2H5.length;
-    let lenTextFigureContentNormal = textFigureContentNormal.length;
+    const lenTextFigure2H5 = textFigure2H5.length;
+    const lenTextFigureContentNormal = textFigureContentNormal.length;
 
 
-    let doc = DocumentApp.getActiveDocument();
-    let documentId = doc.getId();
+    const doc = DocumentApp.getActiveDocument();
+    const documentId = doc.getId();
 
-    let cursorPosition = detectCursorPosition(doc, documentId);
+    const cursorPosition = detectCursorPosition(doc, documentId);
     if (cursorPosition.status == 'error') {
       ui.alert(cursorPosition.message);
       return 0;
     }
 
-    let insertStartIndex = cursorPosition.endIndex;
+    const insertStartIndex = cursorPosition.endIndex;
 
-    let requests = [];
+    const requests = [];
 
     requests.push(
       {

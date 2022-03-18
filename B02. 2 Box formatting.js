@@ -1,23 +1,23 @@
 function formatBox() {
-  let ui = DocumentApp.getUi();
+  const ui = DocumentApp.getUi();
   try {
-    let doc = DocumentApp.getActiveDocument();
-    let documentId = doc.getId();
+    const doc = DocumentApp.getActiveDocument();
+    const documentId = doc.getId();
 
     // Create namedRange for selected table
-    let namedRange = getSelectionCreateNamedRange(doc, documentId, 'TABLE');
+    const namedRange = getSelectionCreateNamedRange(doc, documentId, 'TABLE');
     if (namedRange.status == 'error') {
       ui.alert(namedRange.message);
       return 0;
     }
 
-    let tableStartIndex = namedRange.startIndex;
-    let tableEndIndex = namedRange.endIndex;
+    const tableStartIndex = namedRange.startIndex;
+    const tableEndIndex = namedRange.endIndex;
 
 
-    let document = Docs.Documents.get(documentId);
+    const document = Docs.Documents.get(documentId);
 
-    let bodyElements = document.body.content;
+    const bodyElements = document.body.content;
 
     let fTable;
     for (let i in bodyElements) {
@@ -31,10 +31,10 @@ function formatBox() {
       }
     }
 
-    let requests = [];
+    const requests = [];
 
-    let numRows = fTable.table.rows;
-    let numCols = fTable.table.columns;
+    const numRows = fTable.table.rows;
+    const numCols = fTable.table.columns;
 
     tableStyle_ORANGE_BORDER.width.magnitude = 1.5;
 

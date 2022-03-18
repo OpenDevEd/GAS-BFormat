@@ -1,11 +1,12 @@
+// Updates thisDocStyle document property, updates rgbColor and fontFamily of all style objects that contains color and font family
 function useStyle(styleName) {
   setDocumentPropertyString('thisDocStyle', styleName);
 
-  activeStyle = styleName;
-  Logger.log('useStyle=' + activeStyle);
+  ACTIVE_STYLE = styleName;
+  Logger.log('useStyle=' + ACTIVE_STYLE);
 
-  const rgbColor = hexToRGB(styles[getThisDocStyle()]['main_heading_font_color']);
-  const fontFamily = styles[getThisDocStyle()]['fontFamily'];
+  const rgbColor = hexToRGB(styles[ACTIVE_STYLE]['main_heading_font_color']);
+  const fontFamily = styles[ACTIVE_STYLE]['fontFamily'];
 
   // Updates objects in file A01. Default style Report
   h1H2styles.textStyle_HEADING_1.foregroundColor.color.rgbColor = rgbColor;
@@ -37,7 +38,6 @@ function useStyle(styleName) {
 
   // Updates objects in file A08. Format header
   paragraphStyle_HEADING_SEC.borderBottom.color.color.rgbColor = rgbColor;
-  textStyle_HEADING_SEC.foregroundColor.color.rgbColor = rgbColor;
   textStyle_HEADING_SEC.weightedFontFamily.fontFamily = fontFamily;
 
   // Updates objects in file A09. Format footer
@@ -51,8 +51,6 @@ function useStyle(styleName) {
   // Updates object in file B05. Right border
   paragraphStyle_LEFT_BORDER.borderLeft.color.color.rgbColor = rgbColor;
 
-
   defaultStyleReport();
   onOpen();
-
 }

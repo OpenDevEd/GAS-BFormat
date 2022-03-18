@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 function helpPopupUndo() {
   const ui = DocumentApp.getUi();
   ui.alert(`You may have noticed that BFormat actions cannot be undone. The reason for this is that we are using the Docs API. The reason for using the Docs API is that there are certain operations that are only possible with the Doc API. 
@@ -15,26 +8,32 @@ function onOpen(e) {
 
   const thisDocStyle = getDefaultStyle();
 
+  // Apply more styles submenu
   const subMenu = DocumentApp.getUi().createMenu('Apply more styles');
-
   let selectedStyleMarker = '';
   for (let styleName in styles) {
+    if (styleName == ACTIVE_STYLE) {
+      selectedStyleMarker = '*';
+    } else {
+      selectedStyleMarker = '';
+    }
     subMenu.addItem(styles[styleName]['name'] + selectedStyleMarker, styleName);
   }
+  // End. Apply more styles submenu
 
   DocumentApp.getUi().createMenu('BFormat')
     .addItem('Why can I not use undo?', 'helpPopupUndo')
     .addItem('Help for setting default styles', 'setDefaultStylesManually')
     .addSeparator()
-    .addItem('Apply style: ' + styles[thisDocStyle]['name'], 'defaultStyleReport')
+    .addItem('Apply style: ' + styles[thisDocStyle]['name'], thisDocStyle)
     .addSubMenu(subMenu)
     .addItem('Format text like Heading 1', 'formatTextLikeH1')
-    .addItem('Reformat headings for tables, figures, boxes', 'reformatHeadings5and6') //TODO
+    .addItem('Reformat headings for tables, figures, boxes', 'reformatHeadings5and6')
     .addSeparator()
 
-    .addItem('Insert box', 'insertBox')  //TODO
-    .addItem('Format this box', 'formatBox') //TODO
-    .addItem('Add right-border to paragraph', 'leftBorderParagraph')
+    .addItem('Insert box', 'insertBox')
+    .addItem('Format this box', 'formatBox')
+    .addItem('Add left-border to paragraph', 'leftBorderParagraph')
     .addSeparator()
 
     .addItem('Insert table 2x2', 'insertTable2x2')
@@ -44,7 +43,7 @@ function onOpen(e) {
     .addItem('Format this table', 'formatTableNoBold')
     // Function as before: everything bold.
     .addItem('Format this table (all bold)', 'formatTable')
-    .addItem('Format this table (basic)', 'formatTableBasic')  //TODO
+    .addItem('Format this table (basic)', 'formatTableBasic')
     .addSeparator()
 
     .addItem('Insert figure/image (style 1)', 'insertFigure1')
@@ -53,13 +52,13 @@ function onOpen(e) {
 
     .addItem('Insert pull quote', 'insertPullQuote')
     //.addItem('Format as pull quote', 'formatAsPullQuote') //TODO
-    .addItem('Insert extracted quote', 'insertExtractedQuote') //TODO
+    .addItem('Insert extracted quote', 'insertExtractedQuote')
     //.addItem('Format as extracted quote', 'formatAsExtractedQuote') //TODO
     .addSeparator()
 
     .addItem('Format lists', 'formatListsPart1')
     .addItem('Remove underline from hyperlinks', 'removeUnderlineFromHyperlinks')
-    .addItem('Replace non-smart quotes with smart quotes', 'replaceNonSmartWithSmartQuotes') //TODO
+    .addItem('Replace non-smart quotes with smart quotes', 'replaceNonSmartWithSmartQuotes')
     .addSeparator()
 
     .addItem('Format header', 'formatHeader')

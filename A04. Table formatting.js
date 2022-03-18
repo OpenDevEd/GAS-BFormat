@@ -1,3 +1,5 @@
+// Formats table using default Report styles
+// but doesn't update styles of paragraphs and texts
 function formatTableNoBold() {
   formatTable(updateParagraphTextStyle = false);
 }
@@ -5,25 +7,25 @@ function formatTableNoBold() {
 // Format table using default Report styles
 // See styles in A03. Table insertion.gs
 function formatTable(updateParagraphTextStyle = true) {
-  let ui = DocumentApp.getUi();
+  const ui = DocumentApp.getUi();
   try {
-    let doc = DocumentApp.getActiveDocument();
-    let documentId = doc.getId();
+    const doc = DocumentApp.getActiveDocument();
+    const documentId = doc.getId();
 
     // Create namedRange for selected table
-    let namedRange = getSelectionCreateNamedRange(doc, documentId, 'TABLE');
+    const namedRange = getSelectionCreateNamedRange(doc, documentId, 'TABLE');
     if (namedRange.status == 'error') {
       ui.alert(namedRange.message);
       return 0;
     }
 
-    let tableStartIndex = namedRange.startIndex;
-    let tableEndIndex = namedRange.endIndex;
+    const tableStartIndex = namedRange.startIndex;
+    const tableEndIndex = namedRange.endIndex;
 
 
-    let document = Docs.Documents.get(documentId);
+    const document = Docs.Documents.get(documentId);
 
-    let bodyElements = document.body.content;
+    const bodyElements = document.body.content;
 
     let fTable;
     for (let i in bodyElements) {
@@ -37,10 +39,10 @@ function formatTable(updateParagraphTextStyle = true) {
       }
     }
 
-    let requests = [];
+    const requests = [];
 
-    let numRows = fTable.table.rows;
-    let numCols = fTable.table.columns;
+    const numRows = fTable.table.rows;
+    const numCols = fTable.table.columns;
 
     requests.push(
       {
@@ -95,8 +97,8 @@ function formatTable(updateParagraphTextStyle = true) {
           }
 
 
-          let cellStartIndex = fTable.table.tableRows[row].tableCells[col].startIndex;
-          let cellEndIndex = fTable.table.tableRows[row].tableCells[col].endIndex;
+          const cellStartIndex = fTable.table.tableRows[row].tableCells[col].startIndex;
+          const cellEndIndex = fTable.table.tableRows[row].tableCells[col].endIndex;
 
           requests.push(
             {
