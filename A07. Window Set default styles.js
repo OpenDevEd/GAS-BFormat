@@ -9,7 +9,7 @@ function setDefaultStylesManually() {
     <img src="https://drive.google.com/uc?export=view&id=1qeB4MPI3QPMYoGgHQ91bl_zJHGNaWI5H">`)
     .setWidth(620)
     .setHeight(580);
-  DocumentApp.getUi().showModalDialog(htmlOutput, 'BFormat');
+  DocumentApp.getUi().showModalDialog(htmlOutput, 'bFormat');
 
 
 }

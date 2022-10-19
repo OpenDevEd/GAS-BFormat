@@ -1,5 +1,5 @@
 const styles = {
-  "report_default":
+  /* "report_default":
   {
     "name": "Report (default)",
     "fontFamily": "Open Sans",
@@ -16,11 +16,11 @@ const styles = {
     "footer_text": "Your organisation",
     "header_font_size": 11,
     "footer_font_size": 11,
-  },
+  }, */
   "report_opendeved":
   {
     "name": "Report (OpenDevEd)",
-    "default_everybody": false,
+    "default_everybody": true,
     "default_for": "opendeved.net",
     "fontFamily": "Ubuntu",
     "MARGIN_TOP_cm": 2.5,
@@ -60,9 +60,9 @@ const styles = {
 
 // Gets default style based on user's domain
 function getDefaultStyle() {
-  const activeUser = Session.getEffectiveUser().getEmail();
+  const activeUser = Session.getActiveUser().getEmail().toLowerCase();
   for (let styleName in styles) {
-    if (styles[styleName]['default_for'] && activeUser.search(new RegExp(styles[styleName]['default_for'], 'i')) != -1) {
+    if (styles[styleName]['default_for'] && activeUser.search(styles[styleName]['default_for']) != -1) {
       return styleName;
     }
   }
@@ -74,26 +74,36 @@ function getDefaultStyle() {
   }
 }
 
-// The variable contains style of current doc
-// Initially, it is default style but 
-// (1) function updateStyle changes it to style stored in DocumentProperties thisDocStyle
-// (2) function useStyle changes it to style selected by user
-let ACTIVE_STYLE = getDefaultStyle();
-
-// Changes a value of ACTIVE_STYLE to thisDocStyle doc property if thisDocStyle doc property is set for an active document
-function updateStyle() {
-  Logger.log(' updateStyle()');
-  try {
-    const thisDocStyle = getDocumentPropertyString('thisDocStyle');
-    if (thisDocStyle != null) {
-      ACTIVE_STYLE = thisDocStyle;
+// Detects style of current doc
+function getThisDocumentStyle(tryToRetrieveProperties) {
+  const DEFAULT_DOC_STYLE = getDefaultStyle();
+  const resultObj = {
+    marker: '☑️',
+    style: DEFAULT_DOC_STYLE,
+    domainBasedStyle: DEFAULT_DOC_STYLE,
+    menuText: styles[DEFAULT_DOC_STYLE]['name']
+  };
+  if (tryToRetrieveProperties === true) {
+    try {
+      const docProperties = PropertiesService.getDocumentProperties();
+      const docStyle = docProperties.getProperty('thisDocStyle');
+      if (docStyle != null && styles.hasOwnProperty(docStyle)) {
+        resultObj['style'] = docStyle;
+        resultObj['menuText'] = styles[docStyle]['name'];
+        resultObj['marker'] = '✅';
+      }
+    }
+    catch (error) {
+      Logger.log('Needs to activate!!! ' + error);
     }
   }
-  catch (error) {
-    Logger.log(error);
-  }
+
+  return resultObj;
 }
-updateStyle();
+
+// The variable contains style of current doc
+// function useStyle can change it to style selected by user
+let ACTIVE_STYLE = getThisDocumentStyle(true).style;
 
 function report_default() {
   useStyle('report_default');
