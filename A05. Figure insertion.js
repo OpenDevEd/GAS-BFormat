@@ -1,5 +1,5 @@
 const paragraphStyle_FIGURE_HEADING_5 = {
-  namedStyleType: 'HEADING_5',
+  namedStyleType: styles[ACTIVE_STYLE]['figureHeading'],
   spaceAbove: { magnitude: 10, unit: 'PT' },
   spaceBelow: { magnitude: 6, unit: 'PT' },
   alignment: 'START'
@@ -15,11 +15,11 @@ const paragraphStyle_FIGURE_CONTENT = {
 const textStyle_FIGURE_PART_1 = {
   foregroundColor: {
     color: {
-      rgbColor: { red: 0, green: 0, blue: 0 }
+      rgbColor: hexToRGB(styles[ACTIVE_STYLE]['customStyle']['h6']['FOREGROUND_COLOR'])
     }
   },
   fontSize: {
-    magnitude: 11,
+    magnitude: styles[ACTIVE_STYLE]['customStyle']['h6']['FONT_SIZE'],
     unit: 'PT'
   },
   bold: true,
@@ -33,11 +33,11 @@ const textStyle_FIGURE_PART_1 = {
 const textStyle_FIGURE_PART_2 = {
   foregroundColor: {
     color: {
-      rgbColor: { red: 0, green: 0, blue: 0 }
+      rgbColor: hexToRGB(styles[ACTIVE_STYLE]['customStyle']['h6']['FOREGROUND_COLOR'])
     }
   },
   fontSize: {
-    magnitude: 11,
+    magnitude: styles[ACTIVE_STYLE]['customStyle']['h6']['FONT_SIZE'],
     unit: 'PT'
   },
   bold: false,

@@ -9,7 +9,7 @@ const h1H2styles = {
       }
     },
     fontSize: {
-      magnitude: 21,
+      magnitude: styles[ACTIVE_STYLE]['customStyle']['h1']['FONT_SIZE'],
       unit: 'PT'
     },
     bold: true,
@@ -18,19 +18,20 @@ const h1H2styles = {
       weight: 400
     }
   },
+
   paragraphStyle_HEADING_2: {
     namedStyleType: 'HEADING_2',
-    borderBottom: {
-      width: {
-        magnitude: 1,
-        unit: 'PT'
-      },
-      padding: {
-        magnitude: 2,
-        unit: 'PT'
-      },
-      dashStyle: 'SOLID'
-    }
+    /* borderBottom: {
+       width: {
+         magnitude: 1,
+         unit: 'PT'
+       },
+       padding: {
+         magnitude: 2,
+         unit: 'PT'
+       },
+       dashStyle: 'SOLID'
+     } */
   },
   textStyle_HEADING_2: {
     foregroundColor: {
@@ -39,7 +40,7 @@ const h1H2styles = {
       }
     },
     fontSize: {
-      magnitude: 16,
+      magnitude: styles[ACTIVE_STYLE]['customStyle']['h2']['FONT_SIZE'],
       unit: 'PT'
     },
     bold: true,
@@ -47,8 +48,74 @@ const h1H2styles = {
       fontFamily: styles[ACTIVE_STYLE]['fontFamily'],
       weight: 400
     }
-  }
+  },
+
+  paragraphStyle_HEADING_3: {
+    namedStyleType: 'HEADING_3'
+  },
+  textStyle_HEADING_3: {},
+
+  paragraphStyle_HEADING_4: {
+    namedStyleType: 'HEADING_4'
+  },
+  textStyle_HEADING_4: {},
+
+  paragraphStyle_HEADING_5: {
+    namedStyleType: 'HEADING_5'
+  },
+  textStyle_HEADING_5: {},
+
+  paragraphStyle_HEADING_6: {
+    namedStyleType: 'HEADING_6'
+  },
+  textStyle_HEADING_6: {},
 }
+
+function addTextStyleHeading() {
+  for (let i = 1; i <= 6; i++) {
+    h1H2styles['textStyle_HEADING_' + i] = {
+      /*      foregroundColor: {
+              color: {
+                rgbColor: hexToRGB(styles[ACTIVE_STYLE]['customStyle']['h'+i]['FOREGROUND_COLOR'])
+              }
+            },
+            fontSize: {
+              magnitude: styles[ACTIVE_STYLE]['customStyle']['h'+i]['FONT_SIZE'],
+              unit: 'PT'
+            }, */
+      weightedFontFamily: {
+        fontFamily: styles[ACTIVE_STYLE]['fontFamily'],
+        weight: 400
+      }
+    };
+
+    if (styles[ACTIVE_STYLE]['customStyle'].hasOwnProperty('h' + i)) {
+      if (styles[ACTIVE_STYLE]['customStyle']['h' + i].hasOwnProperty('ITALIC')) {
+        h1H2styles['textStyle_HEADING_' + i].italic = styles[ACTIVE_STYLE]['customStyle']['h' + i]['ITALIC'];
+      }
+      if (styles[ACTIVE_STYLE]['customStyle']['h' + i].hasOwnProperty('BOLD') && styles[ACTIVE_STYLE]['customStyle']['h' + i]['BOLD'] === false) {
+        h1H2styles['textStyle_HEADING_' + i].bold = styles[ACTIVE_STYLE]['customStyle']['h' + i]['BOLD'];
+      } else {
+        h1H2styles['textStyle_HEADING_' + i].bold = true;
+      }
+      if (styles[ACTIVE_STYLE]['customStyle']['h' + i].hasOwnProperty('FOREGROUND_COLOR')) {
+        h1H2styles['textStyle_HEADING_' + i].foregroundColor = {
+          color: {
+            rgbColor: hexToRGB(styles[ACTIVE_STYLE]['customStyle']['h' + i]['FOREGROUND_COLOR'])
+          }
+        };
+      }
+      if (styles[ACTIVE_STYLE]['customStyle']['h' + i].hasOwnProperty('FONT_SIZE')) {
+        h1H2styles['textStyle_HEADING_' + i].fontSize = {
+          magnitude: styles[ACTIVE_STYLE]['customStyle']['h' + i]['FONT_SIZE'],
+          unit: 'PT'
+        }
+      }
+    }
+  }
+  //Logger.log(h1H2styles);
+}
+
 
 function formatTextLikeH1() {
   const ui = DocumentApp.getUi();
@@ -102,12 +169,41 @@ function formatTextLikeH1() {
   }
 }
 
+function createStyle(defaultStyle, customStyle) {
+  for (let heading in customStyle) {
+    if (defaultStyle.hasOwnProperty(heading) === false) {
+      defaultStyle[heading] = {};
+    }
+    for (let attribute in customStyle[heading]) {
+      defaultStyle[heading][attribute] = customStyle[heading][attribute];
+    }
+  }
+  for (let heading in defaultStyle) {
+    if (defaultStyle[heading].hasOwnProperty() === false) {
+      defaultStyle[heading]['FONT_FAMILY'] = styles[ACTIVE_STYLE]['fontFamily'];
+    }
+  }
+  return defaultStyle;
+}
+
 // Set up style for all Heading_1 and Heading_2 paragraphs,
 // normal text, footnotes, lists, remove underline from links
 // Add/edit header and footer
 function defaultStyleReport() {
   const ui = DocumentApp.getUi();
   try {
+
+    const defaultStyle = {
+      normalText: { FONT_SIZE: 12, SPACING_BEFORE: 0, SPACING_AFTER: 10, LINE_SPACING: 1.15, FOREGROUND_COLOR: '#000000' },
+      h1: { FONT_SIZE: 21, SPACING_BEFORE: 14, SPACING_AFTER: 10, LINE_SPACING: 1.15, FOREGROUND_COLOR: '#FF5C00' },
+      h2: { FONT_SIZE: 16, SPACING_BEFORE: 14, SPACING_AFTER: 8, LINE_SPACING: 1.15, FOREGROUND_COLOR: '#000000' },
+      h3: { FOREGROUND_COLOR: '#000000' },
+      h4: { FOREGROUND_COLOR: '#000000' },
+      h5: { FOREGROUND_COLOR: '#000000' },
+      h6: { FOREGROUND_COLOR: '#000000' },
+      footnote: { FONT_SIZE: 10, SPACING_BEFORE: 0, SPACING_AFTER: 0, LINE_SPACING: 1 }
+    };
+    const customStyle = createStyle(defaultStyle, styles[ACTIVE_STYLE]['customStyle']);
 
     const config_fontFamily = styles[ACTIVE_STYLE]['fontFamily'];
 
@@ -119,59 +215,74 @@ function defaultStyleReport() {
 
     let document = Docs.Documents.get(documentId);
 
+    body.setPageWidth(styles[ACTIVE_STYLE]['pageWidth_cm'] * cmTOpt);
+    body.setPageHeight(styles[ACTIVE_STYLE]['pageHeight_cm'] * cmTOpt);
+
     // Set up body text (named style type NORMAL_TEXT) attributes
-    const normalTextStyle = {};
+    /*const normalTextStyle = {};
     normalTextStyle[DocumentApp.Attribute.FONT_FAMILY] = config_fontFamily;
     normalTextStyle[DocumentApp.Attribute.FONT_SIZE] = 12;
     normalTextStyle[DocumentApp.Attribute.SPACING_BEFORE] = 0;
     normalTextStyle[DocumentApp.Attribute.SPACING_AFTER] = 10;
     normalTextStyle[DocumentApp.Attribute.LINE_SPACING] = 1.15;
     normalTextStyle[DocumentApp.Attribute.FOREGROUND_COLOR] = '#000000';
-    body.setHeadingAttributes(DocumentApp.ParagraphHeading.NORMAL, normalTextStyle);
+    body.setHeadingAttributes(DocumentApp.ParagraphHeading.NORMAL, normalTextStyle);*/
+    body.setHeadingAttributes(DocumentApp.ParagraphHeading.NORMAL, customStyle['normalText']);
     // End. Set up body text (named style type NORMAL_TEXT) attributes
 
     // Set up heading 1 (named style type HEADING_1) attributes
-    const heading1TextStyle = {};
+    /* const heading1TextStyle = {};
     heading1TextStyle[DocumentApp.Attribute.FONT_FAMILY] = config_fontFamily;
     heading1TextStyle[DocumentApp.Attribute.FONT_SIZE] = 21;
     heading1TextStyle[DocumentApp.Attribute.SPACING_BEFORE] = 14;
     heading1TextStyle[DocumentApp.Attribute.SPACING_AFTER] = 10;
     heading1TextStyle[DocumentApp.Attribute.LINE_SPACING] = 1.15;
     heading1TextStyle[DocumentApp.Attribute.FOREGROUND_COLOR] = styles[ACTIVE_STYLE]['main_heading_font_color'];
-    heading1TextStyle[DocumentApp.Attribute.BOLD] = true;
-    body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING1, heading1TextStyle);
+    heading1TextStyle[DocumentApp.Attribute.BOLD] = true; */
+    body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING1, customStyle['h1']);
     // End. Set up heading 1 (named style type HEADING_1) attributes   
 
     // Set up heading 2 (named style type HEADING_2) attributes
-    const heading2TextStyle = {};
+    /*const heading2TextStyle = {};
     heading2TextStyle[DocumentApp.Attribute.FONT_FAMILY] = config_fontFamily;
     heading2TextStyle[DocumentApp.Attribute.FONT_SIZE] = 16;
     heading2TextStyle[DocumentApp.Attribute.SPACING_BEFORE] = 14;
     heading2TextStyle[DocumentApp.Attribute.SPACING_AFTER] = 8;
     heading2TextStyle[DocumentApp.Attribute.LINE_SPACING] = 1.15;
     heading2TextStyle[DocumentApp.Attribute.FOREGROUND_COLOR] = '#000000';
-    heading2TextStyle[DocumentApp.Attribute.BOLD] = true;
-    body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING2, heading2TextStyle);
-    // End. Set up heading 1 (named style type HEADING_1) attributes   
+    heading2TextStyle[DocumentApp.Attribute.BOLD] = true;*/
+    //body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING2, heading2TextStyle);
+    body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING2, customStyle['h2']);
+    // End. Set up heading 1 (named style type HEADING_1) attributes  
+
+    if (customStyle.hasOwnProperty('h3')) {
+      body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING3, customStyle['h3']);
+    }
+
+    if (customStyle.hasOwnProperty('h4')) {
+      body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING4, customStyle['h4']);
+    }
 
     // Set up heading 5(6) (named style type HEADING_5) attributes
-    const heading5TextStyle = {};
+    /*const heading5TextStyle = {};
     heading5TextStyle[DocumentApp.Attribute.FOREGROUND_COLOR] = '#000000';
     body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING5, heading5TextStyle);
-    body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING6, heading5TextStyle);
+    body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING6, heading5TextStyle);*/
+    body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING5, customStyle['h5']);
+    body.setHeadingAttributes(DocumentApp.ParagraphHeading.HEADING6, customStyle['h6']);
     // End. Set up heading 5(6) (named style type HEADING_5) attributes
 
     // Set up footnotes attributes
-    const footnoteStyle = {};
+    /* const footnoteStyle = {};
     footnoteStyle[DocumentApp.Attribute.FONT_FAMILY] = config_fontFamily;
     footnoteStyle[DocumentApp.Attribute.FONT_SIZE] = 10;
     footnoteStyle[DocumentApp.Attribute.SPACING_BEFORE] = 0;
     footnoteStyle[DocumentApp.Attribute.SPACING_AFTER] = 10;
-    footnoteStyle[DocumentApp.Attribute.LINE_SPACING] = 1.15;
-    const footnotes = body.getFootnotes();
+    footnoteStyle[DocumentApp.Attribute.LINE_SPACING] = 1.15;*/
+    const footnotes = doc.getFootnotes();
     footnotes.forEach(function (item) {
       item.getFootnoteContents().getParagraphs().forEach(function (item) {
-        item.setAttributes(footnoteStyle);
+        item.setAttributes(customStyle['footnote']);
       });
     });
     // End. Set up footnotes attributes
@@ -183,18 +294,20 @@ function defaultStyleReport() {
     // Set up 20pt after tables
     setSpaceAfterTables20pt(body);
 
+    setSpaceBeforeAfterInTable(body);
+
     doc.saveAndClose();
 
     // Set up lists attributes part 2
     //formatListsPart2(false, requests, document, documentId);
 
-    Logger.log('formatHeader');
+    //Logger.log('formatHeader');
     const resultHeader = formatHeader();
     if (resultHeader.status == 'error') {
       ui.alert(resultHeader.message);
     }
 
-    Logger.log('formatFooter');
+    //Logger.log('formatFooter');
     const result = formatFooter();
     if (result.status == 'error') {
       ui.alert(result.message);
@@ -259,8 +372,8 @@ function defaultStyleReport() {
         const elements = bodyElements[i].paragraph.elements;
         const lastElement = elements.length - 1;
 
-        if (namedStyleType == 'HEADING_1' || namedStyleType == 'HEADING_2') {
-          // If paragraph has HEADING_1 or HEADING_2 named style, we push it in array arrayH1H2
+        if (['HEADING_1', 'HEADING_2', 'HEADING_3', 'HEADING_4', 'HEADING_5', 'HEADING_6'].includes(namedStyleType)) {
+          // If paragraph has HEADING_1, HEADING_2... named style, we push it in array arrayH1H2
           arrayH1H2.push({
             style: namedStyleType,
             startIndex: elements[0].startIndex,
@@ -330,6 +443,22 @@ function defaultStyleReport() {
         spaceAfterTableParagraph = true;
       }
     }
+
+    // Bottom border of H2/H3
+    const transparentBorder = { width: { magnitude: 0, unit: 'PT' }, padding: { magnitude: 0, unit: 'PT' }, dashStyle: 'SOLID' };
+    if (styles[ACTIVE_STYLE]['headingBorderBottom'].hasOwnProperty('h2')) {
+      h1H2styles.paragraphStyle_HEADING_2.borderBottom = styles[ACTIVE_STYLE]['headingBorderBottom']['h2'];
+    } else {
+      h1H2styles.paragraphStyle_HEADING_2.borderBottom = transparentBorder;
+    }
+    if (styles[ACTIVE_STYLE]['headingBorderBottom'].hasOwnProperty('h3')) {
+      h1H2styles.paragraphStyle_HEADING_3.borderBottom = styles[ACTIVE_STYLE]['headingBorderBottom']['h3'];
+    } else {
+      h1H2styles.paragraphStyle_HEADING_3.borderBottom = transparentBorder;
+    }
+    // End. Bottom border of H2/H3
+
+    addTextStyleHeading();
 
     // Use data from arrayH1H2 to add requests for Docs.Documents.batchUpdate
     for (let i in arrayH1H2) {

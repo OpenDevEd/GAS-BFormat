@@ -63,8 +63,8 @@ const tableStyle_ORANGE_BORDER = {
 
 const paragraphStyle_TABLE = {
   namedStyleType: 'NORMAL_TEXT',
-  spaceAbove: { magnitude: 10, unit: 'PT' },
-  spaceBelow: { magnitude: 10, unit: 'PT' },
+  spaceAbove: { magnitude: styles[ACTIVE_STYLE]['paragraphSpacesInCell'], unit: 'PT' },
+  spaceBelow: { magnitude: styles[ACTIVE_STYLE]['paragraphSpacesInCell'], unit: 'PT' },
   alignment: 'START',
 };
 
@@ -78,11 +78,11 @@ const paragraphStyle_TABLE_HEADING = {
 const textStyle_TABLE_HEADING_PART_1 = {
   foregroundColor: {
     color: {
-      rgbColor: hexToRGB(styles[ACTIVE_STYLE]['main_heading_font_color'])
+      rgbColor: hexToRGB(styles[ACTIVE_STYLE]['customStyle']['h6']['FOREGROUND_COLOR'])
     }
   },
   fontSize: {
-    magnitude: 11,
+    magnitude: styles[ACTIVE_STYLE]['customStyle']['h6']['FONT_SIZE'],
     unit: 'PT'
   },
   bold: true,
@@ -96,11 +96,11 @@ const textStyle_TABLE_HEADING_PART_1 = {
 const textStyle_TABLE_HEADING_PART_2 = {
   foregroundColor: {
     color: {
-      rgbColor: hexToRGB(styles[ACTIVE_STYLE]['main_heading_font_color'])
+      rgbColor: hexToRGB(styles[ACTIVE_STYLE]['customStyle']['h6']['FOREGROUND_COLOR'])
     }
   },
   fontSize: {
-    magnitude: 11,
+    magnitude: styles[ACTIVE_STYLE]['customStyle']['h6']['FONT_SIZE'],
     unit: 'PT'
   },
   bold: false,

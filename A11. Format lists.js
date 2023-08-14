@@ -12,6 +12,7 @@ function formatListsPart1(onlyLists = true, requests = [], body, document, docum
     let listItemsWarningTextBullets = '';
     let listItemsWarningTextColor = '';
     let glyphType;
+    const expectedGlyphType = styles[ACTIVE_STYLE]['glyphType'];
     let lists = body.getListItems();
     lists.forEach(function (item) {
       const nestingLevel = item.getNestingLevel();
@@ -30,8 +31,11 @@ function formatListsPart1(onlyLists = true, requests = [], body, document, docum
       glyphType = String(item.getGlyphType());
       if (nestingLevel == 0) {
         item.setIndentStart(36);
-        if (['NUMBER', 'LATIN_UPPER', 'LATIN_LOWER', 'ROMAN_UPPER', 'ROMAN_LOWER', 'SQUARE_BULLET', 'HOLLOW_BULLET'].indexOf(glyphType) == -1) {
-          item.setGlyphType(DocumentApp.GlyphType.SQUARE_BULLET);
+        /*if (['NUMBER', 'LATIN_UPPER', 'LATIN_LOWER', 'ROMAN_UPPER', 'ROMAN_LOWER', 'SQUARE_BULLET', 'HOLLOW_BULLET'].indexOf(glyphType) == -1) {
+          item.setGlyphType(DocumentApp.GlyphType['SQUARE_BULLET']);
+        }*/
+        if (glyphType != expectedGlyphType){
+          item.setGlyphType(DocumentApp.GlyphType[expectedGlyphType]);
         }
       } else if (nestingLevel == 1) {
         if (document.lists[listId].listProperties.nestingLevels[1].glyphSymbol != '–' && ['NUMBER', 'LATIN_UPPER', 'LATIN_LOWER', 'ROMAN_UPPER', 'ROMAN_LOWER'].indexOf(glyphType) == -1) {

@@ -1,6 +1,6 @@
 const paragraphStyle_HEADING_SEC = {
   namedStyleType: "NORMAL_TEXT",
-  borderBottom: {
+  /* borderBottom: {
     width: {
       magnitude: 1,
       unit: "PT"
@@ -15,7 +15,24 @@ const paragraphStyle_HEADING_SEC = {
       unit: 'PT'
     },
     dashStyle: 'SOLID'
-  }
+  } */
+};
+
+const paragraphStyle_HEADING_SEC_PLUS_BOTTOM = {
+  width: {
+    magnitude: 1,
+    unit: "PT"
+  },
+  color: {
+    color: {
+      rgbColor: hexToRGB(styles[ACTIVE_STYLE]['main_heading_font_color'])
+    }
+  },
+  padding: {
+    magnitude: 2,
+    unit: 'PT'
+  },
+  dashStyle: 'SOLID'
 };
 
 const textStyle_HEADING_SEC = {
@@ -41,6 +58,9 @@ const textStyle_HEADING_SEC = {
 
 function formatHeader(onlyHeader = true) {
 
+  if (styles[ACTIVE_STYLE]["headerBottom"] === true) {
+    paragraphStyle_HEADING_SEC.borderBottom = paragraphStyle_HEADING_SEC_PLUS_BOTTOM;
+  }
 
   // Detect header text
   let headerText = '';
@@ -53,7 +73,6 @@ function formatHeader(onlyHeader = true) {
   // End. Detect header text
 
 
-  
   const ui = DocumentApp.getUi();
   const requests = [];
   documentId = DocumentApp.getActiveDocument().getId();
@@ -202,30 +221,31 @@ function updateHeader(requests, documentId, document) {
     // End. Set up bottom border, different header for first page
 
 
+    //Logger.log(document.headers[headerId].content);
     // Set up text style of header
     document.headers[headerId].content.forEach(function (item) {
 
       item.paragraph.elements.forEach(function (item) {
+        if (item.textRun) {
+          item.textRun.textStyle['fontSize'] = { magnitude: styles[ACTIVE_STYLE]['header_font_size'], unit: 'PT' };
+          item.textRun.textStyle['weightedFontFamily'] = { fontFamily: styles[ACTIVE_STYLE]['fontFamily'], weight: 600 };
 
-        item.textRun.textStyle['fontSize'] = { magnitude: styles[ACTIVE_STYLE]['header_font_size'], unit: 'PT' };
-        item.textRun.textStyle['weightedFontFamily'] = { fontFamily: styles[ACTIVE_STYLE]['fontFamily'], weight: 600 };
-
-        if (item.startIndex == null) {
-          item.startIndex = 0;
-        }
-
-        requests.push({
-          updateTextStyle: {
-            textStyle: item.textRun.textStyle,
-            range: {
-              segmentId: headerId,
-              startIndex: item.startIndex,
-              endIndex: item.endIndex
-            },
-            fields: formFieldsString(item.textRun.textStyle)
+          if (item.startIndex == null) {
+            item.startIndex = 0;
           }
-        });
 
+          requests.push({
+            updateTextStyle: {
+              textStyle: item.textRun.textStyle,
+              range: {
+                segmentId: headerId,
+                startIndex: item.startIndex,
+                endIndex: item.endIndex
+              },
+              fields: formFieldsString(item.textRun.textStyle)
+            }
+          });
+        }
       });
     });
     // End. Set up text style of header

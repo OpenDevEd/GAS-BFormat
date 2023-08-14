@@ -23,6 +23,8 @@ const styles = {
     "default_everybody": true,
     "default_for": "opendeved.net",
     "fontFamily": "Ubuntu",
+    "pageWidth_cm": 21,
+    "pageHeight_cm": 29.7,
     "MARGIN_TOP_cm": 2.5,
     "MARGIN_BOTTOM_cm": 2.5,
     "MARGIN_LEFT_cm": 2.0,
@@ -35,6 +37,18 @@ const styles = {
     "footer_text": "OpenDevEd",
     "header_font_size": 11,
     "footer_font_size": 11,
+    "headerBottom": true,
+    "figureHeading": "HEADING_6",
+    "glyphType": "SQUARE_BULLET",
+    "paragraphSpacesInCell":10,
+    "customStyle": {
+      h1: { FONT_SIZE: 21, FOREGROUND_COLOR: '#FF5C00'},
+      h2: { FONT_SIZE: 16 },
+      h6: { FONT_SIZE: 11, SPACING_BEFORE: 0, SPACING_AFTER: 10, LINE_SPACING: 1.15, FOREGROUND_COLOR: '#FF5C00', ITALIC: true },
+    },
+    "headingBorderBottom": {
+      h2: { width: { magnitude: 1, unit: 'PT' }, padding: { magnitude: 2, unit: 'PT' }, dashStyle: 'SOLID' }
+    }
   },
   "report_edtechhub":
   {
@@ -42,6 +56,8 @@ const styles = {
     "default_everybody": false,
     "default_for": "edtechhub.org",
     "fontFamily": "Montserrat",
+    "pageWidth_cm": 21,
+    "pageHeight_cm": 29.7,
     "MARGIN_TOP_cm": 2.0,
     "MARGIN_BOTTOM_cm": 2.0,
     "MARGIN_LEFT_cm": 2.0,
@@ -54,6 +70,57 @@ const styles = {
     "footer_text": "Title of document as shown on cover page",
     "header_font_size": 10,
     "footer_font_size": 10,
+    "headerBottom": true,
+    "figureHeading": "HEADING_6",
+    "glyphType": "SQUARE_BULLET",
+    "paragraphSpacesInCell":10,
+    "customStyle": {
+      h1: { FONT_SIZE: 21, FOREGROUND_COLOR: '#FF5C00'},
+      h2: { FONT_SIZE: 16 },
+      h6: { FONT_SIZE: 11, SPACING_BEFORE: 0, SPACING_AFTER: 10, LINE_SPACING: 1.15, FOREGROUND_COLOR: '#FF5C00', ITALIC: true },
+    },
+    "headingBorderBottom": {
+      h2: { width: { magnitude: 1, unit: 'PT' }, padding: { magnitude: 2, unit: 'PT' }, dashStyle: 'SOLID' }
+    }
+  },
+  "report_EdTech_Fellowship":
+  {
+    "name": "Report (EdTech Fellowship)",
+    "default_everybody": false,
+    //"default_for": "edtechhub.org",
+    "fontFamily": "Open Sans",
+    "pageWidth_cm": 21,
+    "pageHeight_cm": 29.7,
+    "MARGIN_TOP_cm": 3.5,
+    "MARGIN_BOTTOM_cm": 3.0,
+    "MARGIN_LEFT_cm": 2.5,
+    "MARGIN_RIGHT_cm": 2.5,
+    "MARGIN_HEADER_cm": 1.27,
+    "MARGIN_FOOTER_cm": 0.9,
+    "main_heading_font_color": "#133844",
+    "title_position": "footer",
+    "header_text": "EdTech Fellowship",
+    "footer_text": "The HP Cambridge EdTech Fellowship",
+    "header_font_size": 11,
+    "headerBottom": false,
+    "footer_font_size": 11,
+    "figureHeading": "HEADING_6",
+    "glyphType": "BULLET",
+    "paragraphSpacesInCell":5,
+    "customStyle": {
+      normalText: { FONT_SIZE: 12, SPACING_BEFORE: 0, SPACING_AFTER: 10, LINE_SPACING: 1.15, FOREGROUND_COLOR: '#212529' },
+      h1: { FONT_SIZE: 36, SPACING_BEFORE: 30, SPACING_AFTER: 20, LINE_SPACING: 1, FOREGROUND_COLOR: '#133844' },
+      h2: { FONT_SIZE: 24, SPACING_BEFORE: 24, SPACING_AFTER: 0, LINE_SPACING: 1.4, FOREGROUND_COLOR: '#3c1366' },
+      h3: { FONT_SIZE: 21, SPACING_BEFORE: 24, SPACING_AFTER: 10, LINE_SPACING: 1.15, FOREGROUND_COLOR: '#00bdb6' },
+      h4: { FONT_SIZE: 18, SPACING_BEFORE: 24, SPACING_AFTER: 10, LINE_SPACING: 1.15, FOREGROUND_COLOR: '#212529' },
+      h5: { FONT_SIZE: 16, SPACING_BEFORE: 24, SPACING_AFTER: 10, LINE_SPACING: 1.15, FOREGROUND_COLOR: '#212529', BOLD: true, ITALIC: true },
+      h6: { FONT_SIZE: 13, SPACING_BEFORE: 24, SPACING_AFTER: 10, LINE_SPACING: 1.15, FOREGROUND_COLOR: '#8128e7', BOLD: false, ITALIC: true },
+    },
+    "headingBorderBottom": {
+      h3: {
+        width: { magnitude: 1, unit: 'PT' }, padding: { magnitude: 2, unit: 'PT' }, dashStyle: 'SOLID', color: { color: { rgbColor: hexToRGB('#00bdb6') } }
+      }
+    }
   }
 };
 
@@ -115,6 +182,10 @@ function report_opendeved() {
 
 function report_edtechhub() {
   useStyle('report_edtechhub');
+}
+
+function report_EdTech_Fellowship() {
+  useStyle('report_EdTech_Fellowship');
 }
 
 // Sets document property
