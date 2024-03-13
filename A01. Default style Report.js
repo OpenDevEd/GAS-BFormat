@@ -175,7 +175,9 @@ function createStyle(defaultStyle, customStyle) {
       defaultStyle[heading] = {};
     }
     for (let attribute in customStyle[heading]) {
-      defaultStyle[heading][attribute] = customStyle[heading][attribute];
+      if (attribute != 'FOREGROUND_COLOR') {
+        defaultStyle[heading][attribute] = customStyle[heading][attribute];
+      }
     }
   }
   for (let heading in defaultStyle) {
@@ -193,14 +195,20 @@ function defaultStyleReport() {
   const ui = DocumentApp.getUi();
   try {
 
-    const defaultStyle = {
-      normalText: { FONT_SIZE: 12, SPACING_BEFORE: 0, SPACING_AFTER: 10, LINE_SPACING: 1.15, FOREGROUND_COLOR: '#000000' },
-      h1: { FONT_SIZE: 21, SPACING_BEFORE: 14, SPACING_AFTER: 10, LINE_SPACING: 1.15, FOREGROUND_COLOR: '#FF5C00' },
-      h2: { FONT_SIZE: 16, SPACING_BEFORE: 14, SPACING_AFTER: 8, LINE_SPACING: 1.15, FOREGROUND_COLOR: '#000000' },
-      h3: { FOREGROUND_COLOR: '#000000' },
-      h4: { FOREGROUND_COLOR: '#000000' },
-      h5: { FOREGROUND_COLOR: '#000000' },
-      h6: { FOREGROUND_COLOR: '#000000' },
+    const defaultStyle = {//, FOREGROUND_COLOR: '#000000'
+      normalText: { FONT_SIZE: 12, SPACING_BEFORE: 0, SPACING_AFTER: 10, LINE_SPACING: 1.15 },
+      // , FOREGROUND_COLOR: '#FF5C00'
+      h1: { FONT_SIZE: 21, SPACING_BEFORE: 14, SPACING_AFTER: 10, LINE_SPACING: 1.15 },
+      //, FOREGROUND_COLOR: '#000000' 
+      h2: { FONT_SIZE: 16, SPACING_BEFORE: 14, SPACING_AFTER: 8, LINE_SPACING: 1.15 },
+      h3: {},
+      h4: {},
+      h5: {},
+      h6: {},
+      // h3: { FOREGROUND_COLOR: '#000000' },
+      // h4: { FOREGROUND_COLOR: '#000000' },
+      // h5: { FOREGROUND_COLOR: '#000000' },
+      // h6: { FOREGROUND_COLOR: '#000000' },
       footnote: { FONT_SIZE: 10, SPACING_BEFORE: 0, SPACING_AFTER: 0, LINE_SPACING: 1 }
     };
     const customStyle = createStyle(defaultStyle, styles[ACTIVE_STYLE]['customStyle']);
