@@ -77,6 +77,7 @@ const styles = {
     "customStyle": {
       h1: { FONT_SIZE: 21, FOREGROUND_COLOR: '#FF5C00'},
       h2: { FONT_SIZE: 16 },
+      h3: { FONT_SIZE: 14, BOLD: true },
       h6: { FONT_SIZE: 11, SPACING_BEFORE: 0, SPACING_AFTER: 10, LINE_SPACING: 1.15, FOREGROUND_COLOR: '#FF5C00', ITALIC: true },
     },
     "headingBorderBottom": {
