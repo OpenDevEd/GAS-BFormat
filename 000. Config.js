@@ -31,7 +31,7 @@ const styles = {
     "MARGIN_RIGHT_cm": 2.0,
     "MARGIN_HEADER_cm": 1.0,
     "MARGIN_FOOTER_cm": 1.0,
-    "main_heading_font_color": "#FF5C00",
+    "main_heading_font_color": "#E68225",
     "title_position": "header",
     "header_text": "Title of document as shown on cover page",
     "footer_text": "OpenDevEd",
@@ -42,9 +42,9 @@ const styles = {
     "glyphType": "SQUARE_BULLET",
     "paragraphSpacesInCell":10,
     "customStyle": {
-      h1: { FONT_SIZE: 21, FOREGROUND_COLOR: '#FF5C00'},
+      h1: { FONT_SIZE: 21, FOREGROUND_COLOR: '#E68225'},
       h2: { FONT_SIZE: 16 },
-      h6: { FONT_SIZE: 11, SPACING_BEFORE: 0, SPACING_AFTER: 10, LINE_SPACING: 1.15, FOREGROUND_COLOR: '#FF5C00', ITALIC: true },
+      h6: { FONT_SIZE: 11, SPACING_BEFORE: 0, SPACING_AFTER: 10, LINE_SPACING: 1.15, FOREGROUND_COLOR: '#E68225', ITALIC: true },
     },
     "headingBorderBottom": {
       h2: { width: { magnitude: 1, unit: 'PT' }, padding: { magnitude: 2, unit: 'PT' }, dashStyle: 'SOLID' }
