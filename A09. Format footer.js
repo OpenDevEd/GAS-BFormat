@@ -40,6 +40,10 @@ function formatFooter(onlyFooter = true) {
 
   const requests = [];
 
+  if (styles[ACTIVE_STYLE]['FOOTER'] === false) {
+    return { status: 'ok', requests: requests };
+  }
+
   // Detect footer text
   let title = '';
   if (styles[ACTIVE_STYLE]['title_position'] == 'footer') {
