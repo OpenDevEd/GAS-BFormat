@@ -226,6 +226,8 @@ function defaultStyleReport() {
     body.setPageWidth(styles[ACTIVE_STYLE]['pageWidth_cm'] * cmTOpt);
     body.setPageHeight(styles[ACTIVE_STYLE]['pageHeight_cm'] * cmTOpt);
 
+    setMarginsHelper(body);
+
     // Set up body text (named style type NORMAL_TEXT) attributes
     /*const normalTextStyle = {};
     normalTextStyle[DocumentApp.Attribute.FONT_FAMILY] = config_fontFamily;
