@@ -179,19 +179,19 @@ function getThisDocumentStyle(tryToRetrieveProperties) {
 let ACTIVE_STYLE = getThisDocumentStyle(true).style;
 
 function report_default() {
-  useStyle('report_default');
+  return useStyle('report_default');
 }
 
 function report_opendeved() {
-  useStyle('report_opendeved');
+  return useStyle('report_opendeved');
 }
 
 function report_edtechhub() {
-  useStyle('report_edtechhub');
+  return useStyle('report_edtechhub');
 }
 
 function report_EdTech_Fellowship() {
-  useStyle('report_EdTech_Fellowship');
+  return useStyle('report_EdTech_Fellowship');
 }
 
 // Sets document property

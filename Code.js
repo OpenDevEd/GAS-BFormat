@@ -5,23 +5,84 @@ However, it does have the disadvantage that you cannot undo those functions. Use
 }
 
 function onOpen(e) {
-  let tryToRetrieveProperties, addonMenuFunction;
+  universal_bFormat_menu(e, 'menu').addToUi();
+  /*  let tryToRetrieveProperties, addonMenuFunction;
+  
+    if (e && e.authMode == ScriptApp.AuthMode.NONE) {
+      tryToRetrieveProperties = false;
+      addonMenuFunction = '.runUpdateMenu';
+    } else {
+      tryToRetrieveProperties = true;
+      addonMenuFunction = '.run';
+    }
+  
+    const thisDocStyle = getThisDocumentStyle(tryToRetrieveProperties);
+  
+    // Apply more styles submenu
+    const subMenu = DocumentApp.getUi().createMenu('Apply more styles');
+    let selectedStyleMarker = '';
+    if (tryToRetrieveProperties === false) {
+      subMenu.addItem('Activate add-on', 'activateAddOn');
+    } else {
+      for (let styleName in styles) {
+        if (styleName == thisDocStyle.style) {
+          selectedStyleMarker = thisDocStyle.marker + ' ';
+        } else {
+          selectedStyleMarker = '';
+        }
+        subMenu.addItem(selectedStyleMarker + styles[styleName]['name'], styleName);
+      }
+    }
+    // End. Apply more styles submenu
+  
+    const menu = DocumentApp.getUi().createMenu('bFormat')
+    for (let menuItemFunc in addOnMenu) {
+      menu.addItem(addOnMenu[menuItemFunc]['txtMenuName'], 'addOnMenu' + '.' + menuItemFunc + addonMenuFunction);
+      if (addOnMenu[menuItemFunc].separatorBelow === true) {
+        menu.addSeparator();
+      }
+      if (addOnMenu[menuItemFunc].subMenuBelow === true) {
+        menu.addItem('Apply style: ' + styles[thisDocStyle.domainBasedStyle]['name'], thisDocStyle.domainBasedStyle);
+        menu.addSubMenu(subMenu);
+      }
+    }
+    menu.addToUi();
+    */
+}
+
+function universal_bFormat_menu(e, returnType = 'menu') {
+  let tryToRetrieveProperties, methodName;
 
   if (e && e.authMode == ScriptApp.AuthMode.NONE) {
     tryToRetrieveProperties = false;
-    addonMenuFunction = '.runUpdateMenu';
+    methodName = 'runUpdateMenu';
   } else {
     tryToRetrieveProperties = true;
-    addonMenuFunction = '.run';
+    // methodName = 'run';
+    methodName = 'runUpdateMenu';
   }
 
   const thisDocStyle = getThisDocumentStyle(tryToRetrieveProperties);
 
-  // Apply more styles submenu
-  const subMenu = DocumentApp.getUi().createMenu('Apply more styles');
+  const menuStructure = {
+    title: 'bFormat',
+    items: []
+  };
+
+  // Build "Apply more styles" submenu
+  const applyMoreStylesSubmenu = {
+    type: 'submenu',
+    label: 'Apply more styles',
+    items: []
+  };
+
   let selectedStyleMarker = '';
   if (tryToRetrieveProperties === false) {
-    subMenu.addItem('Activate add-on', 'activateAddOn');
+    applyMoreStylesSubmenu.items.push({
+      type: 'item',
+      label: 'Activate add-on',
+      functionName: 'activateAddOn'
+    });
   } else {
     for (let styleName in styles) {
       if (styleName == thisDocStyle.style) {
@@ -29,23 +90,113 @@ function onOpen(e) {
       } else {
         selectedStyleMarker = '';
       }
-      subMenu.addItem(selectedStyleMarker + styles[styleName]['name'], styleName);
+      applyMoreStylesSubmenu.items.push({
+        type: 'item',
+        label: selectedStyleMarker + styles[styleName]['name'],
+        functionName: styleName
+      });
     }
   }
-  // End. Apply more styles submenu
 
-  const menu = DocumentApp.getUi().createMenu('bFormat')
+  // Build main menu items
   for (let menuItemFunc in addOnMenu) {
-    menu.addItem(addOnMenu[menuItemFunc]['txtMenuName'], 'addOnMenu' + '.' + menuItemFunc + addonMenuFunction);
+    menuStructure.items.push({
+      type: 'item',
+      label: addOnMenu[menuItemFunc]['txtMenuName'],
+      functionName: 'addOnMenu',
+      functionParams: [menuItemFunc, methodName]
+    });
+
     if (addOnMenu[menuItemFunc].separatorBelow === true) {
-      menu.addSeparator();
+      menuStructure.items.push({ type: 'separator' });
     }
+
     if (addOnMenu[menuItemFunc].subMenuBelow === true) {
-      menu.addItem('Apply style: ' + styles[thisDocStyle.domainBasedStyle]['name'], thisDocStyle.domainBasedStyle);
-      menu.addSubMenu(subMenu);
+      menuStructure.items.push({
+        type: 'item',
+        label: 'Apply style: ' + styles[thisDocStyle.domainBasedStyle]['name'],
+        functionName: thisDocStyle.domainBasedStyle
+      });
+      menuStructure.items.push(applyMoreStylesSubmenu);
     }
   }
-  menu.addToUi();
+
+  if (returnType === 'data') {
+    return menuStructure;
+  } else {
+    return buildUIMenu(menuStructure);
+  }
+}
+
+function buildUIMenu(menuStructure) {
+  menuStructure.items.unshift({
+    "type": "item",
+    "label": "Open menu in sidebar 🚀",
+    "functionName": "showSidebarMenu"
+  },
+    { type: 'separator' });
+
+  const menu = DocumentApp.getUi().createMenu(menuStructure.title);
+  
+  menuStructure.items.forEach(item => {
+    if (item.type === 'separator') {
+      menu.addSeparator();
+    } else if (item.type === 'item') {
+      // Handle items with parameters (nested object methods)
+      if (item.functionParams && item.functionParams.length > 0) {
+        if (item.functionParams.length === 2) {
+          // Full reconstruction: objectName.property.method
+          menu.addItem(item.label, item.functionName + '.' + item.functionParams[0] + '.' + item.functionParams[1]);
+        } else if (item.functionParams.length === 1) {
+          // Single parameter: objectName.property.run (default)
+          menu.addItem(item.label, item.functionName + '.' + item.functionParams[0] + '.run');
+        }
+      } else {
+        menu.addItem(item.label, item.functionName);
+      }
+    } else if (item.type === 'submenu') {
+      const submenu = DocumentApp.getUi().createMenu(item.label);
+      item.items.forEach(subItem => {
+        if (subItem.type === 'separator') {
+          submenu.addSeparator();
+        } else if (subItem.type === 'item') {
+          // Handle subitems with parameters
+          if (subItem.functionParams && subItem.functionParams.length > 0) {
+            if (subItem.functionParams.length === 2) {
+              submenu.addItem(subItem.label, subItem.functionName + '.' + subItem.functionParams[0] + '.' + subItem.functionParams[1]);
+            } else if (subItem.functionParams.length === 1) {
+              submenu.addItem(subItem.label, subItem.functionName + '.' + subItem.functionParams[0] + '.run');
+            }
+          } else {
+            submenu.addItem(subItem.label, subItem.functionName);
+          }
+        }
+      });
+      menu.addSubMenu(submenu);
+    }
+  });
+  
+  return menu;
+}
+
+// Dispatcher function for sidebar calls to addOnMenu object
+function addOnMenu_sidebar(menuItemFunc, methodName = 'run') {
+  if (addOnMenu[menuItemFunc] && addOnMenu[menuItemFunc][methodName]) {
+    addOnMenu[menuItemFunc][methodName]();
+  } else {
+    throw new Error('Invalid menu item or method: ' + menuItemFunc + '.' + methodName);
+  }
+}
+
+function showSidebarMenu() {
+  const template = HtmlService.createTemplateFromFile('000 Menu sidebar');
+  const menuStructure = universal_bFormat_menu(null, 'data');
+  template.menuStructureJson = JSON.stringify(menuStructure);
+
+  const html = template.evaluate()
+    .setTitle(menuStructure.title + ' menu');
+
+  DocumentApp.getUi().showSidebar(html);
 }
 
 function activateAddOn() {

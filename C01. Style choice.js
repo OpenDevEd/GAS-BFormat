@@ -69,4 +69,10 @@ function useStyle(styleName) {
 
   defaultStyleReport();
   onOpen();
+
+  const updatedMenuStructure = universal_bFormat_menu(null, 'data');
+  return {
+    needUpdate: true,
+    updatedMenuData: updatedMenuStructure
+  };
 }
