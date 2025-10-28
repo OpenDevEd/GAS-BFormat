@@ -281,15 +281,14 @@
   </div>
 
   <script>
-    // Debug: Check what we received
-    console.log('Raw data:', '<?!= menuStructureJson ?>');
+    // console.log('Raw data:', '<?!= menuStructureJson ?>');
     
     let parsedMenuData;
     try {
       parsedMenuData = <?!= menuStructureJson ?>;
-      console.log('Parsed menu data:', parsedMenuData);
+      // console.log('Parsed menu data:', parsedMenuData);
     } catch (e) {
-      console.error('Failed to parse menu data:', e);
+      // console.error('Failed to parse menu data:', e);
       parsedMenuData = { title: 'bReview', items: [] };
     }
     
@@ -432,7 +431,7 @@
             
             // Check if menu needs to be updated
             if (result && result.needUpdate && result.updatedMenuData) {
-              console.log('Updating menu data:', result.updatedMenuData);
+              // console.log('Updating menu data:', result.updatedMenuData);
               
               // Save current search and submenu state
               const currentSearch = this.searchQuery;
@@ -483,7 +482,7 @@
         }
       },
       mounted() {
-        console.log('Vue mounted. MenuData:', this.menuData);
+        // console.log('Vue mounted. MenuData:', this.menuData);
         this.hasSearchStarted = false;
         if (this.menuData && this.menuData.items) {
           this.menuData.items.forEach((item, index) => {

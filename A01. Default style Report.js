@@ -295,15 +295,25 @@ function defaultStyleReport() {
     footnoteStyle[DocumentApp.Attribute.SPACING_AFTER] = 10;
     footnoteStyle[DocumentApp.Attribute.LINE_SPACING] = 1.15;*/
     const footnotes = doc.getFootnotes();
+    // footnotes.forEach(function (item) {
+    //   item.getFootnoteContents().getParagraphs().forEach(function (item) {
+    //     item.setAttributes(customStyle['footnote']);
+    //   });
+    // });
     footnotes.forEach(function (item) {
-      item.getFootnoteContents().getParagraphs().forEach(function (item) {
-        item.setAttributes(customStyle['footnote']);
-      });
+      const footnoteContents = item.getFootnoteContents();
+      if (footnoteContents == null) {
+        // Do nothing
+      } else {
+        footnoteContents.getParagraphs().forEach(function (item) {
+          item.setAttributes(customStyle['footnote']);
+        });
+      }
     });
     // End. Set up footnotes attributes
 
     // Set up lists attributes part 1
-    Logger.log('formatListsPart1');
+    // Logger.log('formatListsPart1');
     formatListsPart1(false, requests, body, document, documentId);
 
     // Set up 20pt after tables
@@ -519,11 +529,11 @@ function defaultStyleReport() {
     } else {
       //  ui.alert('Nothing to change!');
     }
-    return {status: 'ok'};
+    return { status: 'ok' };
   } catch (error) {
-    Logger.log('Error in defaultStyleReport: ' + error);
+    // Logger.log('Error in defaultStyleReport: ' + error);
     ui.alert('Error in defaultStyleReport: ' + error);
-    return {status: 'error'};
+    return { status: 'error' };
   }
 }
 

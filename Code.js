@@ -58,8 +58,7 @@ function universal_bFormat_menu(e, returnType = 'menu') {
     methodName = 'runUpdateMenu';
   } else {
     tryToRetrieveProperties = true;
-    // methodName = 'run';
-    methodName = 'runUpdateMenu';
+    methodName = 'run';
   }
 
   const thisDocStyle = getThisDocumentStyle(tryToRetrieveProperties);
@@ -137,7 +136,7 @@ function buildUIMenu(menuStructure) {
     { type: 'separator' });
 
   const menu = DocumentApp.getUi().createMenu(menuStructure.title);
-  
+
   menuStructure.items.forEach(item => {
     if (item.type === 'separator') {
       menu.addSeparator();
@@ -175,7 +174,7 @@ function buildUIMenu(menuStructure) {
       menu.addSubMenu(submenu);
     }
   });
-  
+
   return menu;
 }
 
@@ -331,7 +330,8 @@ const addOnMenu = {
   s22: {
     txtMenuName: 'Use default margins (Report)',
     run: defaultMargins,
-    runUpdateMenu: function () { runUpdateMenu(this); }
+    runUpdateMenu: function () { runUpdateMenu(this); },
+    separatorBelow: true
   },
   s23: {
     txtMenuName: 'Clear internal broken link markers',

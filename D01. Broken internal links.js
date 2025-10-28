@@ -18,6 +18,9 @@ function findAndMarkBrokenLinksOptimised() {
     const footnotes = doc.getFootnotes();
     for (let i = 0; i < footnotes.length; i++) {
       const footnoteContents = footnotes[i].getFootnoteContents();
+      if (footnoteContents == null) {
+        continue;
+      }
       const numChildren = footnoteContents.getNumChildren();
       for (let j = 0; j < numChildren; j++) {
         collectInternalLinks(footnoteContents.getChild(j), allInternalLinks);
@@ -163,14 +166,14 @@ function findAndMarkBrokenLinksOptimised() {
     if (brokenLinks.length > 0) {
       infoLinks = 'There were broken links. Please search for ' + BROKEN_INTERNAL_LINK_MARKER + ' and fix the links. Note that broken links can occur when you press enter at the start of an existing heading.\n\n' + infoLinks;
       ui.alert(infoLinks);
-      return {status: 'error'};
+      return { status: 'error' };
     } else {
-      return {status: 'ok'};
+      return { status: 'ok' };
     }
   } catch (error) {
     ui.alert('Error in findAndMarkBrokenLinksOptimised: ' + error);
     // Logger.log('Error: ' + error);
-    return {status: 'error'};
+    return { status: 'error' };
   }
 }
 

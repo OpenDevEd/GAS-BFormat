@@ -8,6 +8,7 @@ function clearInternalLinkMarkers() {
     let footnote;
     for (let i in footnotes) {
       footnote = footnotes[i].getFootnoteContents();
+      if (footnote == null) continue;
       footnote.replaceText(BROKEN_INTERNAL_LINK_MARKER, '');
     }
   }
