@@ -332,5 +332,10 @@ const addOnMenu = {
     txtMenuName: 'Use default margins (Report)',
     run: defaultMargins,
     runUpdateMenu: function () { runUpdateMenu(this); }
+  },
+  s23: {
+    txtMenuName: 'Clear internal broken link markers',
+    run: clearInternalLinkMarkers,
+    runUpdateMenu: function () { runUpdateMenu(this); }
   }
 };

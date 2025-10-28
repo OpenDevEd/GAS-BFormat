@@ -1,6 +1,6 @@
 // Updates thisDocStyle document property, updates rgbColor and fontFamily of all style objects that contains color and font family
 function useStyle(styleName) {
-  setDocumentPropertyString('thisDocStyle', styleName);
+  // setDocumentPropertyString('thisDocStyle', styleName);
 
   ACTIVE_STYLE = styleName;
   Logger.log('useStyle=' + ACTIVE_STYLE);
@@ -67,12 +67,14 @@ function useStyle(styleName) {
   // Updates object in file B05. Right border
   paragraphStyle_LEFT_BORDER.borderLeft.color.color.rgbColor = rgbColor;
 
-  defaultStyleReport();
-  onOpen();
-
-  const updatedMenuStructure = universal_bFormat_menu(null, 'data');
-  return {
-    needUpdate: true,
-    updatedMenuData: updatedMenuStructure
-  };
+  const { status } = defaultStyleReport();
+  if (status === 'ok') {
+    setDocumentPropertyString('thisDocStyle', styleName);
+    onOpen();
+    const updatedMenuStructure = universal_bFormat_menu(null, 'data');
+    return {
+      needUpdate: true,
+      updatedMenuData: updatedMenuStructure
+    };
+  }
 }

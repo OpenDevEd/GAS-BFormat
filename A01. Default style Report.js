@@ -195,6 +195,11 @@ function defaultStyleReport() {
   const ui = DocumentApp.getUi();
   try {
 
+    const { status } = findAndMarkBrokenLinksOptimised();
+    if (status === 'error') {
+      return { status };
+    }
+
     const defaultStyle = {//, FOREGROUND_COLOR: '#000000'
       normalText: { FONT_SIZE: 12, SPACING_BEFORE: 0, SPACING_AFTER: 10, LINE_SPACING: 1.15 },
       // , FOREGROUND_COLOR: '#FF5C00'
@@ -514,9 +519,11 @@ function defaultStyleReport() {
     } else {
       //  ui.alert('Nothing to change!');
     }
+    return {status: 'ok'};
   } catch (error) {
     Logger.log('Error in defaultStyleReport: ' + error);
     ui.alert('Error in defaultStyleReport: ' + error);
+    return {status: 'error'};
   }
 }
 
